@@ -55,21 +55,20 @@ const SectionCard: React.FC = () => {
       },
     }}
   >
-    <Card
-    bordered={false}>
-      <Card.Grid style={style}>
-        <>
-        {data24h && data24h.map(data => data.symbol)[0]}
-        </>
-        <Card.Meta 
-          description={data24h != initialState ? data24h.map(data => data.priceChangePercent)[0] + "%" : ""}
-          style={{color: 'black'}}></Card.Meta>
-      </Card.Grid>
-      <Card.Grid style={style}></Card.Grid>
-      <Card.Grid style={style}>Content</Card.Grid>
-      <Card.Grid style={style}>Content</Card.Grid>
-      <Card.Grid style={style}>Content</Card.Grid>
-      <Card.Grid style={style}>Content</Card.Grid>
+    <Card bordered={false}>
+      {[...Array(6).keys()].map(index => {
+          return (
+            <Card.Grid style={style}>
+              <>
+              {data24h && data24h.map(data => data.symbol)[index]}
+              </>
+              <Card.Meta 
+                description={data24h != initialState ? data24h.map(data => data.priceChangePercent)[index] + "%" : ""}
+                style={{color: 'black'}}></Card.Meta>
+           </Card.Grid>
+          )
+        }
+      )};
     </Card>
   </ConfigProvider>
 )};
