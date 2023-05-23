@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { Card, ConfigProvider } from 'antd';
 import  './SectionCard'
 import { Tickers24hData, Ticker24hData } from '../interfaces/Ticker24hData';
-// import axios from "axios";
 
 const style: React.CSSProperties = {
   background: '#32cd32',
@@ -20,8 +19,8 @@ const SectionCard: React.FC = () => {
     .then((response) => response.json())
     .then((data) => {
       let filtered_tickers: string[] = [];
-      let tickers: [] = data.map((cell: Ticker24hData): string => {
-        return cell.symbol
+      let tickers: [] = data.map((object: Ticker24hData): string => {
+        return object.symbol
       })
 
       filtered_tickers = tickers.filter((ticker: string): boolean => ticker.includes('USDT'))
@@ -60,10 +59,10 @@ const SectionCard: React.FC = () => {
     bordered={false}>
       <Card.Grid style={style}>
         <>
-        {data24h.map(data => data.symbol)[0]}
+        {data24h && data24h.map(data => data.symbol)[0]}
         </>
         <Card.Meta 
-          description={String(Number(data24h.map(data => data.priceChangePercent)[0])) + '%'}
+          description={data24h != initialState ? data24h.map(data => data.priceChangePercent)[0] + "%" : ""}
           style={{color: 'black'}}></Card.Meta>
       </Card.Grid>
       <Card.Grid style={style}></Card.Grid>
