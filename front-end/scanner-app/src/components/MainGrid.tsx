@@ -11,7 +11,7 @@ const MainGrid: React.FC = () => {
   const initialState: Ticker24hData[] = [];
   const [data24h, setData24h] = useState(initialState);
 
-  const [opened, setOpened] = useState(true);
+  const [closed, setClosed] = useState(true);
   const [data, setData] = useState({});
 
   useEffect(() => {
@@ -21,10 +21,6 @@ const MainGrid: React.FC = () => {
         JSON.stringify(
           {
             method: "SUBSCRIBE",
-            params:
-            [
-            "btcusdt@ticker"
-            ],
             id: 1
           }
         )
@@ -37,7 +33,7 @@ const MainGrid: React.FC = () => {
     });
     
     ws.onopen = (e) => {
-      setOpened(false);
+      setClosed(false);
     }
   }, []);
 
@@ -47,10 +43,6 @@ const MainGrid: React.FC = () => {
         JSON.stringify(
           {
             method: "UNSUBSCRIBE",
-            params:
-            [
-              "btcusdt@ticker"
-            ],
             id: 1
           }
         )
@@ -60,6 +52,7 @@ const MainGrid: React.FC = () => {
 
       ws.onclose = () => {
         setData("Connection closed.");
+        setClosed(true);
       };
     }
   };
@@ -79,7 +72,7 @@ const MainGrid: React.FC = () => {
     >
       <Divider orientation="left">Top movers</Divider>
       {/* <SectionCard /> */}
-      <Button disabled={opened} onClick={unsubscribe}>Close connection</Button>
+      <Button type="primary" disabled={closed} onClick={unsubscribe}>Close connection</Button>
     </ConfigProvider>
     <p style={{color: 'white'}}>{JSON.stringify(data)}</p>
   </div>
