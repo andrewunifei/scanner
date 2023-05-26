@@ -1,3 +1,5 @@
+import stream24hDataPropsInterface from "../interfaces/stream24hData";
+
 export function wsSubscribeTicker(ticker: string, ws: WebSocket, id: number): void{
     ws.addEventListener("open", (e) => {
         ws.send(
@@ -29,10 +31,6 @@ export function wsUnsubscribeTicker(wsBTC: WebSocket, wsETH: WebSocket){
             );
 
             ws[i].close();
-        }   
-    //   wsBTC.onclose = () => {
-    //     console.log("Connection closed.");
-    //     setClosed(true);
-    //   };
+        }
     }
   };

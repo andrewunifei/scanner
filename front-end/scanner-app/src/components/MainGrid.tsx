@@ -12,24 +12,14 @@ const wsBTC = new WebSocket("wss://stream.binance.com:9443/ws");
 const wsETH = new WebSocket("wss://stream.binance.com:9443/ws");
 const wsPackage: WebSocket[] = [wsBTC, wsETH];
 
-// const dataInterface: stream24hDataPropsInterface;
-// const ws = new WebSocket("wss://ws-api.binance.com:443/ws-api/v3");
-
-function filterData(data: stream24hDataPropsInterface[]): stream24hDataPropsInterface[]{
-  let filteredData: stream24hDataPropsInterface[];
-  
-  filteredData = data.filter((object: stream24hDataPropsInterface): boolean => object.s.includes('USDT'));
-
-  return filteredData
-}
-
 const MainGrid: React.FC = () => {
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
   const [connectionState, setConnectionState] = useState(true);
-  const [BTCdata, setBTCData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
-  const [ETHdata, setETHData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  const [BTCData, setBTCData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  const [ETHData, setETHData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  const dataPackage: stream24hDataPropsInterface[] = [BTCData, ETHData];
 
   let flag = [0, 0];
 
@@ -43,13 +33,17 @@ const MainGrid: React.FC = () => {
 
       // Listen for messages
       wsBTC.addEventListener("message", (e) => {
-        console.log(JSON.parse(e.data));
-        setBTCData(JSON.parse(e.data));
+        if(!e.data.includes("id")){
+          console.log(JSON.parse(e.data));
+          setBTCData(JSON.parse(e.data));
+        }
       });
 
       wsETH.addEventListener("message", (e) => {
-        console.log(JSON.parse(e.data));
-        setETHData(JSON.parse(e.data));
+        if(!e.data.includes("id")){
+          console.log(JSON.parse(e.data));
+          setETHData(JSON.parse(e.data));
+        }
       });
       
       wsBTC.onopen = (e) => {
@@ -71,20 +65,6 @@ const MainGrid: React.FC = () => {
     }
   }, [connectionState]);
 
-  function resendRequest(){
-    wsBTC.send(
-      JSON.stringify(
-        {
-          id: "2",
-          method: "ticker.24hr",
-          params: {
-            symbol: "BTCUSDT"
-          }
-        }
-      )
-    );
-  }
-
   return (
   <div style={style2}>
     <ConfigProvider
@@ -99,11 +79,9 @@ const MainGrid: React.FC = () => {
       }}
     >
       <Divider orientation="left">Top movers</Divider>
-      <SectionCard BTCdata={BTCdata} ETHdata={ETHdata} />
+      <SectionCard tickersData={dataPackage} numberOfGridCard={2} />
       <Unsubscribe wsPackage={wsPackage} buttonState={buttonState} SetConnectionState={setConnectionState} />
-      <Button type="primary" onClick={resendRequest}>Resend request</Button>
     </ConfigProvider>
-    {/* <p style={{color: 'white'}}>{data.s}</p> */}
   </div>
 )};
 
