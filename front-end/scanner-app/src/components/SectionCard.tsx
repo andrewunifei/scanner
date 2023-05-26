@@ -3,12 +3,17 @@ import { useEffect, useState } from 'react'
 import { Card, ConfigProvider } from 'antd';
 import  './SectionCard'
 // import { Tickers24hData, Ticker24hData } from '../interfaces/Ticker24hData';
+import stream24hData from '../interfaces/stream24hData';
 
 const style: React.CSSProperties = {
   background: '#32cd32',
 }
 
-const SectionCard: React.FC = () => {
+type Props = {
+  data: stream24hData
+}
+
+const SectionCard: React.FC<Props> = (props: Props) => {
   // const initialState: Ticker24hData[] = [];
   // const [data24h, setData24h] = useState(initialState);
 
@@ -56,9 +61,14 @@ const SectionCard: React.FC = () => {
     }}
   >
     <Card bordered={false}>
-      {[...Array(6).keys()].map(index => {
+      {[...Array(2).keys()].map(index => {
           return (
-            <Card.Grid style={style}></Card.Grid>
+            <Card.Grid style={style}>
+              {props.data.s}
+              <Card.Meta
+                description={props.data.c}
+              />
+            </Card.Grid>
           )
         }
       )};
