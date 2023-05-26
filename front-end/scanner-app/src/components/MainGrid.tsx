@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Row, ConfigProvider, Button } from 'antd';
 import SectionCard from './SectionCard';
-import { Tickers24hData, Ticker24hData } from '../interfaces/Ticker24hData';
 import stream24hData from '../interfaces/stream24hData';
+import { wsSubscribeTicker } from '../functions/wsFunctions';
+import Unsubscribe from './Unsubscribe';
 
 const style: React.CSSProperties = { };
 const style2: React.CSSProperties = { margin: '2em', padding: '2em', background: '#282c34'};
-const ws = new WebSocket("wss://stream.binance.com:9443/ws");
+const wsBTC = new WebSocket("wss://stream.binance.com:9443/ws");
+const wsETH = new WebSocket("wss://stream.binance.com:9443/ws");
+const wsPackage: WebSocket[] = [wsBTC, wsETH];
 // const ws = new WebSocket("wss://ws-api.binance.com:443/ws-api/v3");
 
 function filterData(data: stream24hData[]): stream24hData[]{
@@ -22,75 +25,46 @@ const MainGrid: React.FC = () => {
   const dataInterface: stream24hData[] = [];
   // const [data24h, setData24h] = useState(initialState);
 
-  const [closed, setClosed] = useState(true);
-  const [data, setData] = useState(dataInterface);
+  const [buttonState, setbuttonState] = useState(true);
+  const [BTCdata, setBTCData] = useState(dataInterface);
+  const [ETHdata, setETHData] = useState(dataInterface);
+
+  let flag = [0, 0];
 
   useEffect(() => {
-    // Connection opened
-    console.log('hmm')
-    ws.addEventListener("open", (event) => {
-      ws.send(
-        JSON.stringify(
-          {
-            method: "SET_PROPERTY",
-            params: [
-              "combined",
-              true
-            ],
-            id: 1
-          }
-        )
-      );
-      ws.send(
-        JSON.stringify(
-          {
-            id: 2,
-            method: "SUBSCRIBE",
-            params: [
-              "btcusdt@ticker",
-              "ethusdt@ticker"
-            ]
-          }
-        )
-      );
-    });
+    // Connection opened to get BTC data
+    wsSubscribeTicker("btcusdt", wsBTC, 1);
+    wsSubscribeTicker("ethusdt", wsETH, 2);
 
     // Listen for messages
-    ws.addEventListener("message", (e) => {
+    wsBTC.addEventListener("message", (e) => {
       console.log(JSON.parse(e.data));
-      // let parsedData = JSON.parse(e.data).s
-      // parsedData.s == "BTCUSDT" ? console.log(parsedData): console.log(typeof parsedData);
-     // setData(JSON.parse(e.data));
+      setBTCData(JSON.parse(e.data));
+    });
+
+    wsETH.addEventListener("message", (e) => {
+      console.log(JSON.parse(e.data));
+      setETHData(JSON.parse(e.data));
     });
     
-    ws.onopen = (e) => {
-      setClosed(false);
+    wsBTC.onopen = (e) => {
+      flag[0] = 1
+      if(flag[0] === 1 && flag[1] === 1){
+        setbuttonState(false);
+      }
     }
+
+    wsETH.onopen = (e) => {
+      flag[1] = 1
+      if(flag[0] === 1 && flag[1] === 1){
+        setbuttonState(false);
+      }
+    }
+
   }, []);
 
-  function unsubscribe(){
-    console.log(ws.readyState);
-    if (ws.readyState === 1) {
-      ws.send(
-        JSON.stringify(
-          {
-            method: "UNSUBSCRIBE",
-            id: 1
-          }
-        )
-      );
-
-      ws.close();
-
-      ws.onclose = () => {
-        console.log("Connection closed.");
-        setClosed(true);
-      };
-    }
-  };
-
   function resendRequest(){
-    ws.send(
+    wsBTC.send(
       JSON.stringify(
         {
           id: "2",
@@ -118,7 +92,7 @@ const MainGrid: React.FC = () => {
     >
       <Divider orientation="left">Top movers</Divider>
       {/* <SectionCard data={data} /> */}
-      <Button type="primary" disabled={closed} onClick={unsubscribe}>Close connection</Button>
+      <Unsubscribe wsPackage={wsPackage} buttonState={buttonState} />
       <Button type="primary" onClick={resendRequest}>Resend request</Button>
     </ConfigProvider>
     {/* <p style={{color: 'white'}}>{data.s}</p> */}
