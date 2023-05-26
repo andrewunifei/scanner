@@ -34,3 +34,48 @@ export function wsUnsubscribeTicker(wsBTC: WebSocket, wsETH: WebSocket){
         }
     }
   };
+
+  export function wsBTCETHConnectionMechanics(
+    wsBTC: WebSocket,
+    wsETH: WebSocket,
+    setBTCData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
+    setETHData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
+    setButtonState: React.Dispatch<React.SetStateAction<boolean>>,
+    setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>
+  ){
+    let flag = [0, 0];
+    // Connection opened to get BTC data
+    wsSubscribeTicker("btcusdt", wsBTC, 1);
+    wsSubscribeTicker("ethusdt", wsETH, 2);
+
+    // Listen for messages
+    wsBTC.addEventListener("message", (e) => {
+    if(!e.data.includes("id")){
+        let parsed = JSON.parse(e.data)
+        console.log(parsed);
+        setBTCData(parsed);
+        setData(parsed);
+    }
+    });
+
+    wsETH.addEventListener("message", (e) => {
+    if(!e.data.includes("id")){
+        console.log(JSON.parse(e.data));
+        setETHData(JSON.parse(e.data));
+    }
+    });
+    
+    wsBTC.onopen = (e) => {
+    flag[0] = 1
+    if(flag[0] === 1 && flag[1] === 1){
+        setButtonState(false);
+    }
+    }
+
+    wsETH.onopen = (e) => {
+    flag[1] = 1
+    if(flag[0] === 1 && flag[1] === 1){
+        setButtonState(false);
+    }
+    }
+  }

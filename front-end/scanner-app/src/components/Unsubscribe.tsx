@@ -1,4 +1,3 @@
-import React, { useState } from 'react'
 import { wsUnsubscribeTicker } from '../functions/wsFunctions';
 import { Button } from 'antd';
 import unsubscribePropsInterface from '../interfaces/unsubscribeProps'

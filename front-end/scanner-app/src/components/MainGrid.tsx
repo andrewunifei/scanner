@@ -5,6 +5,7 @@ import stream24hDataPropsInterface from '../interfaces/stream24hData';
 import { wsSubscribeTicker } from '../functions/wsFunctions';
 import Unsubscribe from './Unsubscribe';
 import dummyTickerObject from '../misc/dummyTickerObject';
+import { wsBTCETHConnectionMechanics } from '../functions/wsFunctions';
 
 const style: React.CSSProperties = { };
 const style2: React.CSSProperties = { margin: '2em', padding: '2em', background: '#282c34'};
@@ -12,7 +13,11 @@ const wsBTC = new WebSocket("wss://stream.binance.com:9443/ws");
 const wsETH = new WebSocket("wss://stream.binance.com:9443/ws");
 const wsPackage: WebSocket[] = [wsBTC, wsETH];
 
-const MainGrid: React.FC = () => {
+interface propsInterface{
+  setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>;
+}
+
+const MainGrid: React.FC<propsInterface> = ({ setData }: propsInterface) => {
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
@@ -27,38 +32,7 @@ const MainGrid: React.FC = () => {
     if(didMount){
       setDidMount(false)
 
-      // Connection opened to get BTC data
-      wsSubscribeTicker("btcusdt", wsBTC, 1);
-      wsSubscribeTicker("ethusdt", wsETH, 2);
-
-      // Listen for messages
-      wsBTC.addEventListener("message", (e) => {
-        if(!e.data.includes("id")){
-          console.log(JSON.parse(e.data));
-          setBTCData(JSON.parse(e.data));
-        }
-      });
-
-      wsETH.addEventListener("message", (e) => {
-        if(!e.data.includes("id")){
-          console.log(JSON.parse(e.data));
-          setETHData(JSON.parse(e.data));
-        }
-      });
-      
-      wsBTC.onopen = (e) => {
-        flag[0] = 1
-        if(flag[0] === 1 && flag[1] === 1){
-          setButtonState(false);
-        }
-      }
-
-      wsETH.onopen = (e) => {
-        flag[1] = 1
-        if(flag[0] === 1 && flag[1] === 1){
-          setButtonState(false);
-        }
-      }
+      wsBTCETHConnectionMechanics(wsBTC, wsETH, setBTCData, setETHData, setButtonState, setData);
     }
     else{
       setButtonState(true)

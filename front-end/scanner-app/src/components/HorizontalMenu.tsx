@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
+import stream24hDataPropsInterface from '../interfaces/stream24hData';
 
 const items: MenuProps['items'] = [
   {
@@ -60,7 +61,11 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const HorizontalMenu: React.FC = () => {
+interface propsInterface{
+  data: stream24hDataPropsInterface;
+}
+
+const HorizontalMenu: React.FC<propsInterface> = ({ data }: propsInterface) => {
   const [current, setCurrent] = useState('mail');
 
   const onClick: MenuProps['onClick'] = (e) => {

@@ -16,7 +16,7 @@ function SectionCard ({ tickersData, numberOfGridCard }: sectionCardPropsInterfa
       },
     }}
   >
-    <Card bordered={false}>
+    <Card bordered={false} size="small">
       {[...Array(2).keys()].map(index => {
           return (
             <Card.Grid style={style}>
