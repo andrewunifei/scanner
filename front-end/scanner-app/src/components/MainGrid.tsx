@@ -1,22 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { Col, Divider, Row, ConfigProvider, Button } from 'antd';
 import SectionCard from './SectionCard';
-import stream24hData from '../interfaces/stream24hData';
+import stream24hDataPropsInterface from '../interfaces/stream24hData';
 import { wsSubscribeTicker } from '../functions/wsFunctions';
 import Unsubscribe from './Unsubscribe';
+import dummyTickerObject from '../misc/dummyTickerObject';
 
 const style: React.CSSProperties = { };
 const style2: React.CSSProperties = { margin: '2em', padding: '2em', background: '#282c34'};
 const wsBTC = new WebSocket("wss://stream.binance.com:9443/ws");
 const wsETH = new WebSocket("wss://stream.binance.com:9443/ws");
 const wsPackage: WebSocket[] = [wsBTC, wsETH];
-const dataInterface: stream24hData[] = [];
+
+// const dataInterface: stream24hDataPropsInterface;
 // const ws = new WebSocket("wss://ws-api.binance.com:443/ws-api/v3");
 
-function filterData(data: stream24hData[]): stream24hData[]{
-  let filteredData: stream24hData[];
+function filterData(data: stream24hDataPropsInterface[]): stream24hDataPropsInterface[]{
+  let filteredData: stream24hDataPropsInterface[];
   
-  filteredData = data.filter((object: stream24hData): boolean => object.s.includes('USDT'));
+  filteredData = data.filter((object: stream24hDataPropsInterface): boolean => object.s.includes('USDT'));
 
   return filteredData
 }
@@ -24,12 +26,10 @@ function filterData(data: stream24hData[]): stream24hData[]{
 const MainGrid: React.FC = () => {
 
   const [didMount, setDidMount] = useState(true);
-
   const [buttonState, setButtonState] = useState(true);
   const [connectionState, setConnectionState] = useState(true);
-
-  const [BTCdata, setBTCData] = useState(dataInterface);
-  const [ETHdata, setETHData] = useState(dataInterface);
+  const [BTCdata, setBTCData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  const [ETHdata, setETHData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
 
   let flag = [0, 0];
 
@@ -99,7 +99,7 @@ const MainGrid: React.FC = () => {
       }}
     >
       <Divider orientation="left">Top movers</Divider>
-      {/* <SectionCard data={data} /> */}
+      <SectionCard BTCdata={BTCdata} ETHdata={ETHdata} />
       <Unsubscribe wsPackage={wsPackage} buttonState={buttonState} SetConnectionState={setConnectionState} />
       <Button type="primary" onClick={resendRequest}>Resend request</Button>
     </ConfigProvider>

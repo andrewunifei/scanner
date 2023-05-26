@@ -1,4 +1,4 @@
-export default interface stream24hData{
+export default interface stream24hDataPropsInterface{
     e: string, // Event type
     E: number, // Event time
     s: string, // Symbol
