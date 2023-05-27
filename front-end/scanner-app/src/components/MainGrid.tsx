@@ -1,62 +1,50 @@
 import React, { useEffect, useState } from 'react'
-import { Col, Divider, Row, ConfigProvider, Button } from 'antd';
-import SectionCard from './SectionCard';
 import stream24hDataPropsInterface from '../interfaces/stream24hData';
-import { wsSubscribeTicker } from '../functions/wsFunctions';
 import Unsubscribe from './Unsubscribe';
 import dummyTickerObject from '../misc/dummyTickerObject';
-import { wsBTCETHConnectionMechanics } from '../functions/wsFunctions';
-
-const style: React.CSSProperties = { };
-const style2: React.CSSProperties = { margin: '2em', padding: '2em', background: '#282c34'};
-const wsBTC = new WebSocket("wss://stream.binance.com:9443/ws");
-const wsETH = new WebSocket("wss://stream.binance.com:9443/ws");
-const wsPackage: WebSocket[] = [wsBTC, wsETH];
+import { wsConnectionMechanics } from '../functions/wsFunctions';
 
 interface propsInterface{
-  setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>;
+  pair: string;
+  id: number;
+  ws: WebSocket;
+  tickerStyle: React.CSSProperties
 }
 
-const MainGrid: React.FC<propsInterface> = ({ setData }: propsInterface) => {
+const MainGrid: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: propsInterface) => {
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
   const [connectionState, setConnectionState] = useState(true);
-  const [BTCData, setBTCData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
-  const [ETHData, setETHData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
-  const dataPackage: stream24hDataPropsInterface[] = [BTCData, ETHData];
+  const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  const [textColor, setTextColor] = useState<string>('');
 
-  let flag = [0, 0];
+  const style: React.CSSProperties = {
+    fontSize: '12px',
+    color: textColor
+  }
 
   useEffect(() => {
     if(didMount){
       setDidMount(false)
 
-      wsBTCETHConnectionMechanics(wsBTC, wsETH, setBTCData, setETHData, setButtonState, setData);
+      wsConnectionMechanics(ws, pair, id, setData, setButtonState);
     }
     else{
+      data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
       setButtonState(true)
     }
-  }, [connectionState]);
+  }, [data]);
 
   return (
-  <div style={style2}>
-    <ConfigProvider
-      theme={{
-        components: {
-          Divider: {
-            lineWidth: 2,
-            colorSplit: '#fff',
-            colorTextHeading: '#fff',
-          },
-        },
-      }}
-    >
-      <Divider orientation="left">Top movers</Divider>
-      <SectionCard tickersData={dataPackage} numberOfGridCard={2} />
-      <Unsubscribe wsPackage={wsPackage} buttonState={buttonState} SetConnectionState={setConnectionState} />
-    </ConfigProvider>
-  </div>
-)};
+    <div>
+      <span style={tickerStyle}>{data.s}</span>
+      <br></br>
+      <span style={style}>{data.c.slice(0, -6) + ' | '}</span>
+      <span style={style}>{data.P + '%'}</span>
+      <span style={{color: '#fff',fontSize: '12px'}}> 24h</span>
+    </div>
+  )
+};
 
 export default MainGrid;

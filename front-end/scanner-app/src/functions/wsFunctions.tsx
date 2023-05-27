@@ -1,6 +1,6 @@
 import stream24hDataPropsInterface from "../interfaces/stream24hData";
 
-export function wsSubscribeTicker(ticker: string, ws: WebSocket, id: number): void{
+export function wsSubscribePair(pair: string, ws: WebSocket, id: number): void{
     ws.addEventListener("open", (e) => {
         ws.send(
             JSON.stringify(
@@ -8,7 +8,7 @@ export function wsSubscribeTicker(ticker: string, ws: WebSocket, id: number): vo
                     id,
                     method: "SUBSCRIBE",
                     params: [
-                    `${ticker}@ticker`
+                    `${pair}@ticker`
                     ]
                 }
             )
@@ -35,47 +35,28 @@ export function wsUnsubscribeTicker(wsBTC: WebSocket, wsETH: WebSocket){
     }
   };
 
-  export function wsBTCETHConnectionMechanics(
-    wsBTC: WebSocket,
-    wsETH: WebSocket,
-    setBTCData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
-    setETHData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
-    setButtonState: React.Dispatch<React.SetStateAction<boolean>>,
-    setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>
-  ){
-    let flag = [0, 0];
+export function wsConnectionMechanics(
+    ws: WebSocket,
+    pair: string,
+    id: number,
+    setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
+    setButtonState: React.Dispatch<React.SetStateAction<boolean>>
+    ){
+
     // Connection opened to get BTC data
-    wsSubscribeTicker("btcusdt", wsBTC, 1);
-    wsSubscribeTicker("ethusdt", wsETH, 2);
+    wsSubscribePair(pair, ws, id);
 
     // Listen for messages
-    wsBTC.addEventListener("message", (e) => {
+    ws.addEventListener("message", (e) => {
     if(!e.data.includes("id")){
         let parsed = JSON.parse(e.data)
-        console.log(parsed);
-        setBTCData(parsed);
+        // console.log(parsed);
+        setData(parsed);
         setData(parsed);
     }
     });
-
-    wsETH.addEventListener("message", (e) => {
-    if(!e.data.includes("id")){
-        console.log(JSON.parse(e.data));
-        setETHData(JSON.parse(e.data));
-    }
-    });
     
-    wsBTC.onopen = (e) => {
-    flag[0] = 1
-    if(flag[0] === 1 && flag[1] === 1){
+    ws.onopen = (e) => {
         setButtonState(false);
     }
-    }
-
-    wsETH.onopen = (e) => {
-    flag[1] = 1
-    if(flag[0] === 1 && flag[1] === 1){
-        setButtonState(false);
-    }
-    }
-  }
+};

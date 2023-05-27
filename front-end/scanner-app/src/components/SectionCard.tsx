@@ -1,35 +1,21 @@
 import React from 'react';
-import { Card, ConfigProvider } from 'antd';
+import { Card, ConfigProvider, Col,Row } from 'antd';
 import sectionCardPropsInterface from '../interfaces/sectionCardProps';
+import { style } from '../css/div';
 
-const style: React.CSSProperties = {
-  background: '#32cd32',
+const style2: React.CSSProperties = {
+  color: '#fff',
+}
+
+const style3: React.CSSProperties = {
+  display: 'flex',
+  // alignItems: 'center',
+  // justifyContent: 'center'
 }
 
 function SectionCard ({ tickersData, numberOfGridCard }: sectionCardPropsInterface) {
-  return (<ConfigProvider
-    theme={{
-      components: {
-        Card: {
-          colorBorderSecondary: '#fff',
-        },
-      },
-    }}
-  >
-    <Card bordered={false} size="small">
-      {[...Array(2).keys()].map(index => {
-          return (
-            <Card.Grid style={style}>
-              {tickersData[index].s}
-              <Card.Meta
-                description={tickersData[index].c.slice(0, -6)}
-              />
-            </Card.Grid>
-          )
-        }
-      )};
-    </Card>
-  </ConfigProvider>
+  return (
+<></>
 )};
 
 export default SectionCard;
