@@ -39,10 +39,10 @@ const MainGrid: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: props
   return (
     <div>
       <span style={tickerStyle}>{data.s}</span>
+      <span style={{color: '#fff',fontSize: '12px'}}> 24h</span>
       <br></br>
       <span style={style}>{data.c.slice(0, -6) + ' | '}</span>
-      <span style={style}>{data.P + '%'}</span>
-      <span style={{color: '#fff',fontSize: '12px'}}> 24h</span>
+      <span style={style}>{data.P.slice(0, -1) + '%'}</span>
     </div>
   )
 };

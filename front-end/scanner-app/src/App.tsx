@@ -8,16 +8,16 @@ import dummyTickerObject from './misc/dummyTickerObject';
 import { Col, Row } from 'antd';
 import { style } from './css/div'
 
-const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
+const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 
-const rightPairStyle: React.CSSProperties = {
-  color: '#F2A900',
+const leftPairStyle: React.CSSProperties = {
+  color: '#F2A900', 
   fontWeight: 'bold'
 }
 
-const leftPairStyle: React.CSSProperties = {
-  color: '#ecf0f1',
+const rightPairStyle: React.CSSProperties = {
+  color: 'rgb(6, 103, 208)',
   fontWeight: 'bold'
 }
 
@@ -31,8 +31,8 @@ const flexContainer: React.CSSProperties = {
 // enviando dados de outro componente de entrada de dados para esse aqui
 // e alterando os valores dos pares 
 // possibilitando mais flexibilidade de costumização no front-end
-const rightPair = 'btcusdt';
-const leftPair = 'ethusdt';
+const rightPair = 'linkusdt';
+const leftPair = 'btcusdt';
 
 function App() {
   const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
@@ -44,10 +44,10 @@ function App() {
          <HorizontalMenu data={data}/>
         </Col>
         <Col span={3} style={flexContainer}>
-          <MainGrid pair={rightPair} id={1} ws={rightPairWS} tickerStyle={rightPairStyle}/>
+          <MainGrid pair={leftPair} id={2} ws={leftPairWS} tickerStyle={leftPairStyle}/>
         </Col>
         <Col span={3} style={flexContainer}>
-          <MainGrid pair={leftPair} id={2} ws={leftPairWS} tickerStyle={leftPairStyle}/>
+          <MainGrid pair={rightPair} id={1} ws={rightPairWS} tickerStyle={rightPairStyle}/>
         </Col>
       </Row>
     </div>
