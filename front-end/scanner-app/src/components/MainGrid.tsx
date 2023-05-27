@@ -19,9 +19,16 @@ const MainGrid: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: props
   const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
   const [textColor, setTextColor] = useState<string>('');
 
-  const style: React.CSSProperties = {
+  const priceStyle: React.CSSProperties = {
     fontSize: '12px',
-    color: textColor
+    color: textColor,
+    whiteSpace: "nowrap"
+  }
+
+  const timeframeStyle: React.CSSProperties = {
+    color: '#fff',
+    fontSize: '12px',
+    whiteSpace: "nowrap"
   }
 
   useEffect(() => {
@@ -39,10 +46,10 @@ const MainGrid: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: props
   return (
     <div>
       <span style={tickerStyle}>{data.s}</span>
-      <span style={{color: '#fff',fontSize: '12px'}}> 24h</span>
+      <span style={timeframeStyle}> 24h</span>
       <br></br>
-      <span style={style}>{data.c.slice(0, -6) + ' | '}</span>
-      <span style={style}>{data.P.slice(0, -1) + '%'}</span>
+      <span style={priceStyle}>{data.c.slice(0, -6) + ' | '}</span>
+      <span style={priceStyle}>{data.P.slice(0, -1) + '%'}</span>
     </div>
   )
 };

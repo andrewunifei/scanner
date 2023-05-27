@@ -13,12 +13,14 @@ const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 
 const leftPairStyle: React.CSSProperties = {
   color: '#F2A900', 
-  fontWeight: 'bold'
+  fontWeight: 'bold',
+  whiteSpace: "nowrap"
 }
 
 const rightPairStyle: React.CSSProperties = {
-  color: 'rgb(6, 103, 208)',
-  fontWeight: 'bold'
+  color: '#ecf0f1',
+  fontWeight: 'bold',
+  whiteSpace: "nowrap"
 }
 
 const flexContainer: React.CSSProperties = {
@@ -31,7 +33,7 @@ const flexContainer: React.CSSProperties = {
 // enviando dados de outro componente de entrada de dados para esse aqui
 // e alterando os valores dos pares 
 // possibilitando mais flexibilidade de costumização no front-end
-const rightPair = 'linkusdt';
+const rightPair = 'ethusdt';
 const leftPair = 'btcusdt';
 
 function App() {
