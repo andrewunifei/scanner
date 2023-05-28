@@ -1,5 +1,5 @@
 import React from 'react'
-import { Col, Row, Input, Space, Button } from 'antd'
+import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 
 const style: React.CSSProperties = {
@@ -9,8 +9,9 @@ const style: React.CSSProperties = {
 
 const style2: React.CSSProperties = {
     borderStyle: 'solid',
-    borderWidth: '1px',
-    borderColor: '#F5F5F5'
+    borderWidth: '0px',
+    borderColor: '#000',
+    padding: '0'
 }
 
 
@@ -18,10 +19,17 @@ function MainMenuPairsConfig() {
   return (
     <div>
         <Row>
-            <Col span={8} style={style2}><h1 style={style}><span>Configuration:</span> main menu pairs</h1></Col>
-            <Col span={8} ></Col>
-            <Col span={8} ></Col>
-            <Col span={8}>
+            <Col span={24} style={style2}>
+
+                <ConfigProvider>
+                    <Divider plain style={{color: '#1e1e1e'}} orientation='left'>
+                    Main menu pairs
+                    </Divider>
+                </ConfigProvider>
+            </Col>
+
+
+            <Col span={8} style={style2}>
                 <Space direction="horizontal">
                     <span>Left pair</span>
                     <Input
@@ -32,7 +40,7 @@ function MainMenuPairsConfig() {
                     </Button>
                 </Space>
             </Col>
-            <Col span={8}>
+            <Col span={8} style={style2}>
                 <Space direction="horizontal">
                     <span>Right pair</span>
                     <Input
@@ -43,6 +51,7 @@ function MainMenuPairsConfig() {
                     </Button>
                 </Space>
             </Col>
+            <Col span={8} style={style2}></Col>
         </Row>
             
     </div>
