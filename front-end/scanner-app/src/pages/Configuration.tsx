@@ -27,23 +27,43 @@ const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOu
   },
 );
 
+const style: React.CSSProperties = {
+  background: '#fff',
+  borderStyle: 'solid',
+  borderWidth: '1px',
+}
+
 const App: React.FC = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
   return (
-    <Row style={{ padding: '20px 50px', background: appColors.dark }}>
-        <Col span={4} style={{background: '#fff'}}>
+    <Row style={{ padding: '50px 50px', background: '#FAFAFA', height: '100%' }}>
+        <Col span={4} >
             <Menu
                 mode="inline"
                 defaultSelectedKeys={['1']}
                 defaultOpenKeys={['sub1']}
-                style={{ height: '100%' }}
                 items={items2}
+                style={
+                  {
+                    borderStyle: 'solid',
+                    borderWidth: '5px',
+                    borderRadius: '10px',
+                    borderColor: '#FAFAFA'
+                  }
+                }
             />
         </Col>
-        <Col span={20} style={{background: '#fff'}}>
+        <Col span={20} style={
+            {
+              background: '#fff',
+              borderStyle: 'solid',
+              borderWidth: '5px',
+              borderColor: '#FAFAFA'
+            }
+          }>
         </Col>
     </Row>
   );

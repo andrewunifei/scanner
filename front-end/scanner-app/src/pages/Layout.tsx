@@ -65,7 +65,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div style={{height: '100vh'}}>
+    <div>
       <Row>
         <Col span={18}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
