@@ -11,7 +11,7 @@ interface propsInterface{
   tickerStyle: React.CSSProperties
 }
 
-const MainGrid: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: propsInterface) => {
+const MenuPairStream: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: propsInterface) => {
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
@@ -54,4 +54,4 @@ const MainGrid: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: props
   )
 };
 
-export default MainGrid;
+export default MenuPairStream;

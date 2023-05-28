@@ -1,12 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
 import './App.css';
 import HorizontalMenu from './components/HorizontalMenu';
-import MainGrid from './components/MainGrid';
-import stream24hDataPropsInterface from './interfaces/stream24hData';
-import dummyTickerObject from './misc/dummyTickerObject';
+import MenuPairStream from './components/MenuPairStream';
 import { Col, Row } from 'antd';
-import { style } from './css/div'
 
 const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
@@ -37,20 +32,18 @@ const rightPair = 'ethusdt';
 const leftPair = 'btcusdt';
 
 function App() {
-  const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
-
   return (
-    <div className="App" style={style}>
+    <div className="App">
       <Row>
         <Col span={18}>
-         <HorizontalMenu data={data}/>
+         <HorizontalMenu />
         </Col>
         <Col span={3} style={flexContainer}>
-          <MainGrid pair={leftPair} id={2} ws={leftPairWS} tickerStyle={leftPairStyle}/>
+          <MenuPairStream pair={leftPair} id={2} ws={leftPairWS} tickerStyle={leftPairStyle} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <MainGrid pair={rightPair} id={1} ws={rightPairWS} tickerStyle={rightPairStyle}/>
-        </Col>
+          <MenuPairStream pair={rightPair} id={1} ws={rightPairWS} tickerStyle={rightPairStyle} />
+        </Col>  
       </Row>
     </div>
   );

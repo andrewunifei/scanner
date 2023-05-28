@@ -65,7 +65,7 @@ interface propsInterface{
   data: stream24hDataPropsInterface;
 }
 
-const HorizontalMenu: React.FC<propsInterface> = ({ data }: propsInterface) => {
+const HorizontalMenu: React.FC = () => {
   const [current, setCurrent] = useState('mail');
 
   const onClick: MenuProps['onClick'] = (e) => {

@@ -1,10 +1,10 @@
-import { wsUnsubscribeTicker } from '../functions/wsFunctions';
+import { wsUnsubscribe } from '../functions/wsFunctions';
 import { Button } from 'antd';
 import unsubscribePropsInterface from '../interfaces/unsubscribeProps'
 
-function Unsubscribe({ wsPackage, buttonState, SetConnectionState }: unsubscribePropsInterface) {
+function Unsubscribe({ws, id, buttonState, SetConnectionState }: unsubscribePropsInterface) {
     let handleClick = () => {
-        wsUnsubscribeTicker(wsPackage[0], wsPackage[1]);
+        wsUnsubscribe(ws, id);
         SetConnectionState(false);
 
         console.log('Connection closed.')
