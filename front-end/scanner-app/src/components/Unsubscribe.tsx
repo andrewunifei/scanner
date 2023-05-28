@@ -1,6 +1,6 @@
 import { wsUnsubscribe } from '../functions/wsFunctions';
 import { Button } from 'antd';
-import unsubscribePropsInterface from '../interfaces/unsubscribeProps'
+import unsubscribePropsInterface from '../interfaces/props/unsubscribeProps'
 
 function Unsubscribe({ws, id, buttonState, SetConnectionState }: unsubscribePropsInterface) {
     let handleClick = () => {

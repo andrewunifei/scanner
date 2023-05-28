@@ -3,8 +3,8 @@ import Unsubscribe from './Unsubscribe';
 import dummyTickerObject from '../misc/dummyTickerObject';
 import { wsConnectionMechanics } from '../functions/wsFunctions';
 import { Triangle } from  'react-loader-spinner'
-import menuPairStreamPropsInterface from '../interfaces/menuPairStreamPropsInterface';
-import stream24hDataPropsInterface from '../interfaces/stream24hData';
+import menuPairStreamPropsInterface from '../interfaces/props/menuPairStreamProps';
+import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
 
 const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle }: menuPairStreamPropsInterface) => {
 

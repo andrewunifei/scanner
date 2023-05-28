@@ -1,4 +1,4 @@
-import stream24hDataPropsInterface from "../interfaces/stream24hData"
+import stream24hDataPropsInterface from "../interfaces/data/stream24hData"
 
 export default () => {
     const dummy: stream24hDataPropsInterface = {

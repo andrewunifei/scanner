@@ -1,4 +1,4 @@
-import stream24hDataPropsInterface from "../interfaces/stream24hData";
+import stream24hDataPropsInterface from "../interfaces/data/stream24hData";
 
 export function wsSubscribe(pair: string, ws: WebSocket, id: number): void{
     ws.addEventListener("open", (e) => {
