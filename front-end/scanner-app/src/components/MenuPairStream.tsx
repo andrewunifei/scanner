@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import stream24hDataPropsInterface from '../interfaces/stream24hData';
 import Unsubscribe from './Unsubscribe';
 import dummyTickerObject from '../misc/dummyTickerObject';
 import { wsConnectionMechanics } from '../functions/wsFunctions';
 import { Triangle } from  'react-loader-spinner'
+import menuPairStreamPropsInterface from '../interfaces/menuPairStreamPropsInterface';
+import stream24hDataPropsInterface from '../interfaces/stream24hData';
 
-interface propsInterface{
-  pair: string;
-  id: number;
-  ws: WebSocket;
-  tickerStyle: React.CSSProperties
-}
-
-const MenuPairStream: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }: propsInterface) => {
+const MenuPairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle }: menuPairStreamPropsInterface) => {
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
