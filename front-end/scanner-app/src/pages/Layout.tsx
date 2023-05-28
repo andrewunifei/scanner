@@ -12,7 +12,6 @@ const items: MenuProps['items'] = [
   {
     label: <Link to='/'>Dashboard</Link>,
     key: '/',
-    icon: <PieChartTwoTone twoToneColor={appColors.dark}/>,
   },
   {
     label: 'Navigation Two',
@@ -22,7 +21,6 @@ const items: MenuProps['items'] = [
   {
     label: <Link to='/configuration'>Configuration</Link>,
     key: '/configuration',
-    icon: <SettingTwoTone twoToneColor={appColors.dark}/>,
   },
   {
     label: (

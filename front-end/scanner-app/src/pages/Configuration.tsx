@@ -1,9 +1,9 @@
-import React from 'react';
-import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
+import { SettingOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import { Col, Row } from 'antd';
+import { Breadcrumb, Layout, Menu, Divider } from 'antd';
 import { appColors } from '../colors';
+import MainMenuPairsConfig from '../components/MainMenuPairsConfig';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -12,7 +12,7 @@ const items2: MenuProps['items'] = [
     label: 'Pairs',
     key: '1',
     children: [{
-      key: '1',
+      key: 'mainMenuPair',
       label: 'Main menu pairs',
     }]
   }
@@ -25,59 +25,58 @@ const style: React.CSSProperties = {
 }
 
 const App: React.FC = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  const [current, setCurrent]= useState<string>('mainMenuPair');
+
+  const onClick: MenuProps['onClick'] = (e) => {
+    console.log('click ', e.key);
+    console.log('mainMenuPair')
+    setCurrent(e.key);
+  };
 
   return (
       <Layout style={{height: '95vh'}}>
         <Content style={{ padding: '0 50px' }}>
-          <Breadcrumb style={{ margin: '50px 0 20px 0' }}items={[{ title: 'Configuration' }]}  />
+          <Breadcrumb 
+            style={{ margin: '50px 0 20px 0' }}
+            items={[{ title: (
+              <>
+                <SettingOutlined /> 
+                <span>Configuration</span>
+              </>
+            )}]}
+          />
           <Layout style={{
             padding: '24px 0', 
             background: '#fff', 
             borderRadius: '10px', 
             boxShadow: '15px 15px 15px rgb(60, 60, 60, 0.1)',
             height: '65vh',
-            overflowY: 'scroll'
             }}>
-              <Sider style={{ background: '#fff' }} width={200}>
+              <Sider style={{ background: '#fff', overflowY: 'scroll'}} width={200}>
                 <Menu
                   mode="inline"
+                  defaultSelectedKeys={['1']}
                   defaultOpenKeys={['1']}
                   style={{ height: '100%' }}
                   items={items2}
+                  onClick={onClick}
                 />
               </Sider>
-              <Content style={{ padding: '0 24px'}}>
-                Content
+              <Content style={{ padding: '0 24px', overflowY: 'scroll'}}>
+                <>
+                  {
+                    current === 'mainMenuPair' &&
+                    <MainMenuPairsConfig />
+                  }
+                </>
               </Content>
           </Layout>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Fractal Hub • 2023</Footer>
+        <Footer style={{ textAlign: 'center' }}>
+          <Divider plain>Fractal Hub • 2023</ Divider>
+        </Footer>
     </Layout>
   );
 };
 
-export default App;
-
-// <Layout>
-//       <Content >
-
-//         <Layout style={{ padding: '24px 0', background: colorBgContainer }}>
-//           <Sider style={{ background: colorBgContainer }} width={200}>
-//             <Menu
-//               mode="inline"
-//               defaultSelectedKeys={['1']}
-//               defaultOpenKeys={['sub1']}
-//               style={{ height: '100%' }}
-//               items={items2}
-//             />
-//           </Sider>
-//           <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
-//         </Layout>
-//       </Content>
-//       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
-// </Layout>
-
-
+export default App
