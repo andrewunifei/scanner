@@ -1,55 +1,24 @@
 import React, { useState } from 'react';
-import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
+import { PieChartTwoTone, SettingTwoTone } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
-import stream24hDataPropsInterface from '../interfaces/stream24hData';
+import { appColors } from '../colors';
 
 const items: MenuProps['items'] = [
   {
-    label: 'Navigation One',
+    label: 'Dashboard',
     key: 'mail',
-    icon: <MailOutlined />,
+    icon: <PieChartTwoTone twoToneColor={appColors.dark}/>,
   },
   {
     label: 'Navigation Two',
     key: 'app',
-    icon: <AppstoreOutlined />,
     disabled: true,
   },
   {
-    label: 'Navigation Three - Submenu',
-    key: 'SubMenu',
-    icon: <SettingOutlined />,
-    children: [
-      {
-        type: 'group',
-        label: 'Item 1',
-        children: [
-          {
-            label: 'Option 1',
-            key: 'setting:1',
-          },
-          {
-            label: 'Option 2',
-            key: 'setting:2',
-          },
-        ],
-      },
-      {
-        type: 'group',
-        label: 'Item 2',
-        children: [
-          {
-            label: 'Option 3',
-            key: 'setting:3',
-          },
-          {
-            label: 'Option 4',
-            key: 'setting:4',
-          },
-        ],
-      },
-    ],
+    label: 'Configuration',
+    key: 'mail',
+    icon: <SettingTwoTone twoToneColor={appColors.dark}/>,
   },
   {
     label: (
@@ -60,10 +29,6 @@ const items: MenuProps['items'] = [
     key: 'alipay',
   },
 ];
-
-interface propsInterface{
-  data: stream24hDataPropsInterface;
-}
 
 const HorizontalMenu: React.FC = () => {
   const [current, setCurrent] = useState('mail');

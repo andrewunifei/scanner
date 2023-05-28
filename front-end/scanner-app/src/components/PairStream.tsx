@@ -6,7 +6,7 @@ import { Triangle } from  'react-loader-spinner'
 import menuPairStreamPropsInterface from '../interfaces/menuPairStreamPropsInterface';
 import stream24hDataPropsInterface from '../interfaces/stream24hData';
 
-const MenuPairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle }: menuPairStreamPropsInterface) => {
+const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle }: menuPairStreamPropsInterface) => {
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
@@ -66,4 +66,4 @@ const MenuPairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, 
   )
 };
 
-export default MenuPairStream;
+export default PairStream;
