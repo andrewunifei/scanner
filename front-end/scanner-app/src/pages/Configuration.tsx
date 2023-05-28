@@ -37,20 +37,24 @@ const App: React.FC = () => {
             padding: '24px 0', 
             background: '#fff', 
             borderRadius: '10px', 
-            boxShadow: '15px 15px 15px rgb(60, 60, 60, 0.1)'
+            boxShadow: '15px 15px 15px rgb(60, 60, 60, 0.1)',
+            height: '65vh',
+            overflowY: 'scroll'
             }}>
-            <Sider style={{ background: '#fff' }} width={200}>
-              <Menu
-                mode="inline"
-                defaultOpenKeys={['1']}
-                style={{ height: '100%' }}
-                items={items2}
-              />
-            </Sider>
-            <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
+              <Sider style={{ background: '#fff' }} width={200}>
+                <Menu
+                  mode="inline"
+                  defaultOpenKeys={['1']}
+                  style={{ height: '100%' }}
+                  items={items2}
+                />
+              </Sider>
+              <Content style={{ padding: '0 24px'}}>
+                Content
+              </Content>
           </Layout>
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Fractal Hub 2023</Footer>
+        <Footer style={{ textAlign: 'center' }}>Fractal Hub • 2023</Footer>
     </Layout>
   );
 };
