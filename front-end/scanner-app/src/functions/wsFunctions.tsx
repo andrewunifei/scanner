@@ -43,14 +43,35 @@ export function wsConnectionMechanics(
     wsSubscribe(pair, ws, id);
 
     ws.addEventListener("message", (e) => {
-    if(!e.data.includes("id")){
-        let parsed = JSON.parse(e.data);
-        setData(parsed);
-        setConnectionState(true);
-    }
+        if(!e.data.includes("id")){
+            let parsed = JSON.parse(e.data);
+            setData(parsed);
+            setConnectionState(true);
+        }
     });
     
     ws.onopen = (e) => {
         setButtonState(false);
     }
 };
+
+export function wsReFetch(
+        ws: WebSocket,
+        id: number,
+        pair: string
+    ){
+
+    if(ws.readyState == 1){
+        ws.send(
+            JSON.stringify(
+                {
+                    id,
+                    method: "SUBSCRIBE",
+                    params: [
+                    `${pair}@ticker`
+                    ]
+                }
+            )
+        );
+    }
+}

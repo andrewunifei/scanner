@@ -46,6 +46,17 @@ const flexContainer: React.CSSProperties = {
 const rightPair = 'ethusdt';
 const leftPair = 'btcusdt';
 
+const pairDetails = (ticker: string, color: string, backgroundColor: string): Object => {
+  return ({
+    ticker,
+    color,
+    backgroundColor
+  })
+}
+
+const defaultLeftPair = pairDetails('btcusdt', '#F2A900', appColors.dark) 
+const defaultRightPair = pairDetails('ethusdt', '#ecf0f1', appColors.dark) 
+
 const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 

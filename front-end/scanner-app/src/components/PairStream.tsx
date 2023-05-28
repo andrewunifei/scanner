@@ -26,6 +26,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tick
     whiteSpace: "nowrap"
   }
 
+
   useEffect(() => {
     if(didMount){
       setDidMount(false)
