@@ -3,8 +3,7 @@ import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 
 const style: React.CSSProperties = {
-    color:  '#1E1E1E',
-    fontWeight: 'normal'
+    color: '#1e1e1e'
 }
 
 const style2: React.CSSProperties = {
@@ -20,10 +19,15 @@ function MainMenuPairsConfig() {
     <div>
         <Row>
             <Col span={24} style={style2}>
-
-                <ConfigProvider>
-                    <Divider plain style={{color: '#1e1e1e'}} orientation='left'>
-                    Main menu pairs
+                <ConfigProvider
+                    theme={{
+                        token: {
+                            colorSplit: '#F5F5F5'
+                        },
+                    }}
+                  >
+                    <Divider plain orientation='left'>
+                        <span style={style}>Set pairs</span>
                     </Divider>
                 </ConfigProvider>
             </Col>
