@@ -3,16 +3,15 @@ import { PieChartTwoTone, SettingTwoTone } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { appColors } from '../colors';
-import HorizontalMenuProps from '../interfaces/props/menuProps';
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import { Col, Row } from 'antd';
-import PairStream from './PairStream';
+import PairStream from '../components/PairStream';
 import { pairStyle } from '../css/MenuPairStreamStyle';
 
 const items: MenuProps['items'] = [
   {
     label: <Link to='/'>Dashboard</Link>,
-    key: 'mail',
+    key: '/',
     icon: <PieChartTwoTone twoToneColor={appColors.dark}/>,
   },
   {
@@ -21,8 +20,8 @@ const items: MenuProps['items'] = [
     disabled: true,
   },
   {
-    label: <Link to='/config'>Configuration</Link>,
-    key: 'mail',
+    label: <Link to='/configuration'>Configuration</Link>,
+    key: '/configuration',
     icon: <SettingTwoTone twoToneColor={appColors.dark}/>,
   },
   {
@@ -53,7 +52,8 @@ const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 
 const Layout: React.FC = () => {
-  const [current, setCurrent] = useState('mail');
+  const location = useLocation();
+  const [current, setCurrent] = useState(location.pathname);
   const [tickerColor, setTickerColor] = useState({
     leftTickerColor:'#F2A900', 
     rightTickerColor:'#ecf0f1'
@@ -65,7 +65,7 @@ const Layout: React.FC = () => {
   };
 
   return (
-    <div>
+    <div style={{height: '100vh'}}>
       <Row>
         <Col span={18}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
@@ -77,9 +77,8 @@ const Layout: React.FC = () => {
           <PairStream pair={rightPair} id={1} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
         </Col>  
       </Row>
-      <Row>
-        <Outlet />
-      </Row> 
+
+      <Outlet />
     </div>
   )
 };

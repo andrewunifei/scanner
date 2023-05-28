@@ -4,4 +4,10 @@
   display: flex;
   align-items: stretch;
   flex-direction: column;
+  
 }
+
+#root {
+  height: 100vh;
+}
+
