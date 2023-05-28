@@ -21,7 +21,8 @@ const rightPairStyle: React.CSSProperties = {
 const flexContainer: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
-  justifyContent: 'center'
+  justifyContent: 'center',
+  background: '#282C34'
 }
 
 // Nós podemos abrir a possibilidade para outros tickers

@@ -3,6 +3,7 @@ import stream24hDataPropsInterface from '../interfaces/stream24hData';
 import Unsubscribe from './Unsubscribe';
 import dummyTickerObject from '../misc/dummyTickerObject';
 import { wsConnectionMechanics } from '../functions/wsFunctions';
+import { Triangle } from  'react-loader-spinner'
 
 interface propsInterface{
   pair: string;
@@ -15,7 +16,7 @@ const MenuPairStream: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }:
 
   const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
-  const [connectionState, setConnectionState] = useState(true);
+  const [connectionState, setConnectionState] = useState(false);
   const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
   const [textColor, setTextColor] = useState<string>('');
 
@@ -35,7 +36,7 @@ const MenuPairStream: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }:
     if(didMount){
       setDidMount(false)
 
-      wsConnectionMechanics(ws, pair, id, setData, setButtonState);
+      wsConnectionMechanics(ws, pair, id, setData, setButtonState, setConnectionState);
     }
     else{
       data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
@@ -45,11 +46,28 @@ const MenuPairStream: React.FC<propsInterface> = ({ pair, id, ws, tickerStyle }:
 
   return (
     <div>
-      <span style={tickerStyle}>{data.s}</span>
-      <span style={timeframeStyle}> 24h</span>
-      <br></br>
-      <span style={priceStyle}>{data.c.slice(0, -6) + ' | '}</span>
-      <span style={priceStyle}>{data.P.slice(0, -1) + '%'}</span>
+      {
+        !connectionState &&
+        <Triangle
+          height="30"
+          width="30"
+          color="#fff"
+          ariaLabel="triangle-loading"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible={true}
+        />
+      }
+      {
+        connectionState &&
+        <div>
+          <span style={tickerStyle}>{data.s}</span>
+          <span style={timeframeStyle}> 24h</span>
+          <br></br>
+          <span style={priceStyle}>{data.c.slice(0, -6) + ' | '}</span>
+          <span style={priceStyle}>{data.P.slice(0, -1) + '%'}</span>
+        </div>
+      }
     </div>
   )
 };

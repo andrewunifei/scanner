@@ -36,15 +36,17 @@ export function wsConnectionMechanics(
         pair: string,
         id: number,
         setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
-        setButtonState: React.Dispatch<React.SetStateAction<boolean>>
+        setButtonState: React.Dispatch<React.SetStateAction<boolean>>,
+        setConnectionState: React.Dispatch<React.SetStateAction<boolean>>
     ){
 
     wsSubscribe(pair, ws, id);
 
     ws.addEventListener("message", (e) => {
     if(!e.data.includes("id")){
-        let parsed = JSON.parse(e.data)
+        let parsed = JSON.parse(e.data);
         setData(parsed);
+        setConnectionState(true);
     }
     });
     
