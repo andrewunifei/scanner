@@ -7,25 +7,16 @@ import { appColors } from '../colors';
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items2: MenuProps['items'] = [UserOutlined, LaptopOutlined, NotificationOutlined].map(
-  (icon, index) => {
-    const key: string = String(index + 1);
-
-    return {
-      key: `sub${key}`,
-      icon: React.createElement(icon),
-      label: `subnav ${key}`,
-
-      children: new Array(4).fill(null).map((_, j) => {
-        const subKey: number = index * 4 + j + 1;
-        return {
-          key: subKey,
-          label: `option${subKey}`,
-        };
-      }),
-    };
-  },
-);
+const items2: MenuProps['items'] = [
+  {
+    label: 'Pairs',
+    key: '1',
+    children: [{
+      key: '1',
+      label: 'Main menu pairs',
+    }]
+  }
+];
 
 const style: React.CSSProperties = {
   background: '#fff',
@@ -39,33 +30,28 @@ const App: React.FC = () => {
   } = theme.useToken();
 
   return (
-    <Row style={{ padding: '50px 50px', background: '#FAFAFA', height: '100%' }}>
-        <Col span={4} >
-            <Menu
+      <Layout style={{height: '95vh'}}>
+        <Content style={{ padding: '0 50px' }}>
+          <Breadcrumb style={{ margin: '50px 0 20px 0' }}items={[{ title: 'Configuration' }]}  />
+          <Layout style={{
+            padding: '24px 0', 
+            background: '#fff', 
+            borderRadius: '10px', 
+            boxShadow: '15px 15px 15px rgb(60, 60, 60, 0.1)'
+            }}>
+            <Sider style={{ background: '#fff' }} width={200}>
+              <Menu
                 mode="inline"
-                defaultSelectedKeys={['1']}
-                defaultOpenKeys={['sub1']}
+                defaultOpenKeys={['1']}
+                style={{ height: '100%' }}
                 items={items2}
-                style={
-                  {
-                    borderStyle: 'solid',
-                    borderWidth: '5px',
-                    borderRadius: '10px',
-                    borderColor: '#FAFAFA'
-                  }
-                }
-            />
-        </Col>
-        <Col span={20} style={
-            {
-              background: '#fff',
-              borderStyle: 'solid',
-              borderWidth: '5px',
-              borderColor: '#FAFAFA'
-            }
-          }>
-        </Col>
-    </Row>
+              />
+            </Sider>
+            <Content style={{ padding: '0 24px', minHeight: 280 }}>Content</Content>
+          </Layout>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Fractal Hub 2023</Footer>
+    </Layout>
   );
 };
 
@@ -89,3 +75,5 @@ export default App;
 //       </Content>
 //       <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
 // </Layout>
+
+

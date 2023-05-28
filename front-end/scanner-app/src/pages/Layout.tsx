@@ -66,7 +66,7 @@ const Layout: React.FC = () => {
 
   return (
     <div>
-      <Row>
+      <Row style={{height: '5vh'}}>
         <Col span={18}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
@@ -77,7 +77,7 @@ const Layout: React.FC = () => {
           <PairStream pair={rightPair} id={1} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
         </Col>  
       </Row>
-
+      
       <Outlet />
     </div>
   )
