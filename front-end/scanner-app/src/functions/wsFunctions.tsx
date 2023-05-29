@@ -66,26 +66,26 @@ export function wsReFetch(
             JSON.stringify(
                 {
                     id,
-                    method: "UNSUBSCRIBE",
+                    method: "SUBSCRIBE",
                     params: [
-                    `eth@ticker`
+                    `${newPair}@ticker`
                     ]
                 }
             )
-        )
+        );
 
         ws.addEventListener("message", (e) => {
             ws.send(
                 JSON.stringify(
                     {
                         id,
-                        method: "SUBSCRIBE",
+                        method: "UNSUBSCRIBE",
                         params: [
-                        `${newPair}@ticker`
+                        `eth@ticker`
                         ]
                     }
                 )
-            );
+            )
         })
     }
 }

@@ -22,10 +22,9 @@ const style2: React.CSSProperties = {
 // }
 
 interface configurationTools {
-    left: WebSocket,
-    right: WebSocket
+    left: [React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<React.SetStateAction<string>>],
+    right: [React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<React.SetStateAction<string>>]
 }
-
 
 function MainMenuPairsConfig() {
     const pairsPackage = useOutletContext<configurationTools>();
@@ -75,7 +74,8 @@ function MainMenuPairsConfig() {
                             //     color: '#fff',
                             //     backgroundColor: '#000'
                             // })
-                            wsReFetch(pairsPackage.right, 2, rightTicker)
+                            pairsPackage.right[0](true)
+                            pairsPackage.right[1](rightTicker)
 
                             console.log(rightTicker)
                         }}

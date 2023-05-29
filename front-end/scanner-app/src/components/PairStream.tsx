@@ -6,9 +6,8 @@ import { Triangle } from  'react-loader-spinner'
 import menuPairStreamPropsInterface from '../interfaces/props/menuPairStreamProps';
 import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
 
-const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle }: menuPairStreamPropsInterface) => {
+const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle, pairDidUpdate, setPairDidUpdate }: menuPairStreamPropsInterface) => {
 
-  const [didMount, setDidMount] = useState(true);
   const [buttonState, setButtonState] = useState(true);
   const [connectionState, setConnectionState] = useState(false);
   const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
@@ -28,8 +27,8 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tick
 
 
   useEffect(() => {
-    if(didMount){
-      setDidMount(false)
+    if(pairDidUpdate){
+      setPairDidUpdate(false);
 
       wsConnectionMechanics(ws, pair, id, setData, setButtonState, setConnectionState);
     }
@@ -37,7 +36,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tick
       data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
       setButtonState(true)
     }
-  }, [data]);
+  }, [data, pair]);
 
   return (
     <div>

@@ -61,9 +61,14 @@ const Layout: React.FC = () => {
     leftTickerColor:'#F2A900', 
     rightTickerColor:'#ecf0f1'
   });
+  const [leftPairDidUpdate, setLeftPairDidUpdate] = useState(true);
+  const [rightPairDidUpdate, setRightPairDidUpdate] = useState(true);
 
-  const [leftPairDetails, setLeftPairDetails] = useState(defaultLeftPair)
-  const [rightPairDetails, setRightPairDetails] = useState(defaultRightPair)
+  const [leftPair, setLeftPair] = useState(defaultLeftPair.ticker);
+  const [rightPair, setRightPair] = useState(defaultRightPair.ticker);
+
+  // const [leftPairDetails, setLeftPairDetails] = useState(defaultLeftPair)
+  // const [rightPairDetails, setRightPairDetails] = useState(defaultRightPair)
 
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
@@ -77,17 +82,17 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={leftPairDetails.ticker} id={1} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} />
+          <PairStream pair={leftPair} id={1} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} pairDidUpdate={leftPairDidUpdate} setPairDidUpdate={setLeftPairDidUpdate} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={rightPairDetails.ticker} id={2} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
+          <PairStream pair={rightPair} id={2} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} pairDidUpdate={rightPairDidUpdate} setPairDidUpdate={setRightPairDidUpdate} />
         </Col>  
       </Row>
       
       <Outlet context={
         {
-          left: leftPairWS,
-          right: rightPairWS
+          left: [setLeftPairDidUpdate, setLeftPair],
+          right: [setRightPairDidUpdate, setRightPair]
         }}
       />
     </div>
