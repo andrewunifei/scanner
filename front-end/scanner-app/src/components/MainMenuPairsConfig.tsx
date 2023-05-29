@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 import { useOutletContext } from 'react-router-dom';
 import pairProperties from '../interfaces/data/pairProperties';
+import { wsReFetch } from '../functions/wsFunctions';
 
 const style: React.CSSProperties = {
     color: '#1e1e1e'
@@ -15,10 +16,20 @@ const style2: React.CSSProperties = {
     padding: '0'
 }
 
+// interface configurationTools {
+//     left: React.Dispatch<React.SetStateAction<pairProperties>>,
+//     right: React.Dispatch<React.SetStateAction<pairProperties>>
+// }
+
+interface configurationTools {
+    left: WebSocket,
+    right: WebSocket
+}
+
 
 function MainMenuPairsConfig() {
-    const pairsPropsPackage = useOutletContext<[pairProperties]>();
-    console.log(pairsPropsPackage[0].ticker + ' here')
+    const pairsPackage = useOutletContext<configurationTools>();
+    const [rightTicker, setRightTicker] = useState('')
 
   return (
     <div>
@@ -53,9 +64,22 @@ function MainMenuPairsConfig() {
                 <Space direction="horizontal">
                     <span>Right pair</span>
                     <Input
-                    placeholder="ETHUSDT"
+                        placeholder="ETHUSDT"
+                        onChange={e => setRightTicker(e.target.value)}
                     />
-                    <Button style={{ width: 80 }} >
+                    <Button 
+                        style={{ width: 80 }} 
+                        onClick={e => {
+                            // pairsPackage.right({
+                            //     ticker: rightTicker,
+                            //     color: '#fff',
+                            //     backgroundColor: '#000'
+                            // })
+                            wsReFetch(pairsPackage.right, 2, rightTicker)
+
+                            console.log(rightTicker)
+                        }}
+                    >
                     <ToolOutlined />
                     </Button>
                 </Space>

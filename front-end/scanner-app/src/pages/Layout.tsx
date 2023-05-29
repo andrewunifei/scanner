@@ -77,14 +77,19 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={leftPairDetails.ticker} id={2} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} />
+          <PairStream pair={leftPairDetails.ticker} id={1} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={rightPairDetails.ticker} id={1} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
+          <PairStream pair={rightPairDetails.ticker} id={2} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
         </Col>  
       </Row>
       
-      <Outlet context={[setLeftPairDetails, setRightPairDetails]} />
+      <Outlet context={
+        {
+          left: leftPairWS,
+          right: rightPairWS
+        }}
+      />
     </div>
   )
 };

@@ -58,7 +58,7 @@ export function wsConnectionMechanics(
 export function wsReFetch(
         ws: WebSocket,
         id: number,
-        pair: string
+        newPair: string
     ){
 
     if(ws.readyState == 1){
@@ -66,12 +66,26 @@ export function wsReFetch(
             JSON.stringify(
                 {
                     id,
-                    method: "SUBSCRIBE",
+                    method: "UNSUBSCRIBE",
                     params: [
-                    `${pair}@ticker`
+                    `eth@ticker`
                     ]
                 }
             )
-        );
+        )
+
+        ws.addEventListener("message", (e) => {
+            ws.send(
+                JSON.stringify(
+                    {
+                        id,
+                        method: "SUBSCRIBE",
+                        params: [
+                        `${newPair}@ticker`
+                        ]
+                    }
+                )
+            );
+        })
     }
 }
