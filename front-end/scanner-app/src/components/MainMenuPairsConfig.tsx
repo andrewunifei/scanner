@@ -1,6 +1,8 @@
 import React from 'react'
 import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
+import { useOutletContext } from 'react-router-dom';
+import pairProperties from '../interfaces/data/pairProperties';
 
 const style: React.CSSProperties = {
     color: '#1e1e1e'
@@ -15,6 +17,9 @@ const style2: React.CSSProperties = {
 
 
 function MainMenuPairsConfig() {
+    const pairsPropsPackage = useOutletContext<[pairProperties]>();
+    console.log(pairsPropsPackage[0].ticker + ' here')
+
   return (
     <div>
         <Row>

@@ -3,10 +3,11 @@ import { PieChartTwoTone, SettingTwoTone } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { appColors } from '../colors';
-import { Outlet, Link, useLocation } from "react-router-dom";
+import { Outlet, Link, useLocation, useOutletContext } from "react-router-dom";
 import { Col, Row } from 'antd';
 import PairStream from '../components/PairStream';
 import { pairStyle } from '../css/MenuPairStreamStyle';
+import pairProperties from '../interfaces/data/pairProperties';
 
 const items: MenuProps['items'] = [
   {
@@ -39,14 +40,7 @@ const flexContainer: React.CSSProperties = {
   background: appColors.dark
 }
 
-// Nós podemos abrir a possibilidade para outros tickers
-// enviando dados de outro componente de entrada de dados para esse aqui
-// e alterando os valores dos pares 
-// possibilitando mais flexibilidade de costumização no front-end
-const rightPair = 'ethusdt';
-const leftPair = 'btcusdt';
-
-const pairDetails = (ticker: string, color: string, backgroundColor: string): Object => {
+const assemblePair = (ticker: string, color: string, backgroundColor: string): pairProperties => {
   return ({
     ticker,
     color,
@@ -54,8 +48,8 @@ const pairDetails = (ticker: string, color: string, backgroundColor: string): Ob
   })
 }
 
-const defaultLeftPair = pairDetails('btcusdt', '#F2A900', appColors.dark) 
-const defaultRightPair = pairDetails('ethusdt', '#ecf0f1', appColors.dark) 
+const defaultLeftPair = assemblePair('btcusdt', '#F2A900', appColors.dark) 
+const defaultRightPair = assemblePair('ethusdt', '#ecf0f1', appColors.dark) 
 
 const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
@@ -68,10 +62,13 @@ const Layout: React.FC = () => {
     rightTickerColor:'#ecf0f1'
   });
 
+  const [leftPairDetails, setLeftPairDetails] = useState(defaultLeftPair)
+  const [rightPairDetails, setRightPairDetails] = useState(defaultRightPair)
+
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
-  };
+  };  
 
   return (
     <div>
@@ -80,14 +77,14 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={leftPair} id={2} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} />
+          <PairStream pair={leftPairDetails.ticker} id={2} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={rightPair} id={1} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
+          <PairStream pair={rightPairDetails.ticker} id={1} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} />
         </Col>  
       </Row>
       
-      <Outlet />
+      <Outlet context={[setLeftPairDetails, setRightPairDetails]} />
     </div>
   )
 };

@@ -4,6 +4,8 @@ import type { MenuProps } from 'antd';
 import { Breadcrumb, Layout, Menu, Divider } from 'antd';
 import { appColors } from '../colors';
 import MainMenuPairsConfig from '../components/MainMenuPairsConfig';
+import { useOutletContext } from 'react-router-dom';
+import pairProperties from '../interfaces/data/pairProperties';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -23,6 +25,7 @@ const style: React.CSSProperties = {
   borderStyle: 'solid',
   borderWidth: '1px',
 }
+
 
 const App: React.FC = () => {
   const [current, setCurrent]= useState<string>('mainMenuPair');
