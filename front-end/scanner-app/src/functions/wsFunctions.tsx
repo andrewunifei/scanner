@@ -26,8 +26,9 @@ export function wsUnsubscribe(ws: WebSocket, id: number){
                 }
             )
         );
-
+        
         ws.close();
+
     }
 };
 
@@ -39,6 +40,8 @@ export function wsConnectionMechanics(
         setButtonState: React.Dispatch<React.SetStateAction<boolean>>,
         setConnectionState: React.Dispatch<React.SetStateAction<boolean>>
     ){
+
+    console.log(pair)
 
     wsSubscribe(pair, ws, id);
 

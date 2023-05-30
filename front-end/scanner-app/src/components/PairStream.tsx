@@ -5,12 +5,23 @@ import { wsConnectionMechanics } from '../functions/wsFunctions';
 import { Triangle } from  'react-loader-spinner'
 import menuPairStreamPropsInterface from '../interfaces/props/menuPairStreamProps';
 import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
+import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
 
-const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tickerStyle, pairDidUpdate, setPairDidUpdate }: menuPairStreamPropsInterface) => {
+const PairStream: React.FC<menuPairStreamPropsInterface> = (
+  { 
+    pair, 
+    id, 
+    ws, 
+    tickerStyle, 
+    data,
+    setData,
+    buttonState,
+    setButtonState,
+    connectionState,
+    setConnectionState
+  }: menuPairStreamPropsInterface) => {
 
-  const [buttonState, setButtonState] = useState(true);
-  const [connectionState, setConnectionState] = useState(false);
-  const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  // Customization //
   const [textColor, setTextColor] = useState<string>('');
 
   const priceStyle: React.CSSProperties = {
@@ -24,19 +35,24 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = ({ pair, id, ws, tick
     fontSize: '12px',
     whiteSpace: "nowrap"
   }
+  ////
 
+  // Initialization //
+  const [didMount, setDidMount] = useState<boolean>(true);
 
   useEffect(() => {
-    if(pairDidUpdate){
-      setPairDidUpdate(false);
+    if(didMount){
+      setDidMount(false);
 
       wsConnectionMechanics(ws, pair, id, setData, setButtonState, setConnectionState);
     }
     else{
+      console.log(data)
       data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
       setButtonState(true)
     }
-  }, [data, pair]);
+  }, [data]);
+  ////
 
   return (
     <div>

@@ -8,6 +8,9 @@ import { Col, Row } from 'antd';
 import PairStream from '../components/PairStream';
 import { pairStyle } from '../css/MenuPairStreamStyle';
 import pairProperties from '../interfaces/data/pairProperties';
+import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
+import dummyTickerObject from '../misc/dummyTickerObject';
+import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
 
 const items: MenuProps['items'] = [
   {
@@ -75,6 +78,39 @@ const Layout: React.FC = () => {
     setCurrent(e.key);
   };  
 
+    // Stream pair configuration //
+    const [buttonState, setButtonState] = useState(true);
+    const [connectionState, setConnectionState] = useState(false);
+    const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  
+    const configurationFunctions: pairStreamConfigInterface = {
+      setData,
+      setButtonState, 
+      setConnectionState
+    }
+
+    const [buttonState2, setButtonState2] = useState(true);
+    const [connectionState2, setConnectionState2] = useState(false);
+    const [data2, setData2] = useState<stream24hDataPropsInterface>(dummyTickerObject);
+  
+    const configurationFunctions2: pairStreamConfigInterface = {
+      setData: setData2,
+      setButtonState: setButtonState2, 
+      setConnectionState: setConnectionState2
+    }
+    ////
+
+  const [leftPairConfigs, setLeftPairConfigs] = useState<pairStreamConfigInterface>({
+    setData,
+    setButtonState,
+    setConnectionState
+  });
+  const [rightPairConfigs, setRightPairConfigs] = useState<pairStreamConfigInterface>({
+    setData: setData2,
+    setButtonState: setButtonState2, 
+    setConnectionState: setConnectionState2
+  });
+
   return (
     <div>
       <Row style={{height: '5vh'}}>
@@ -82,17 +118,25 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={leftPair} id={1} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} pairDidUpdate={leftPairDidUpdate} setPairDidUpdate={setLeftPairDidUpdate} />
+          <PairStream pair={leftPair} id={1} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} data={data} setData={setData} buttonState={buttonState} setButtonState={setButtonState} connectionState={connectionState} setConnectionState={setConnectionState} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={rightPair} id={2} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} pairDidUpdate={rightPairDidUpdate} setPairDidUpdate={setRightPairDidUpdate} />
+          <PairStream pair={rightPair} id={2} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} data={data2} setData={setData2} buttonState={buttonState2} setButtonState={setButtonState2} connectionState={connectionState2} setConnectionState={setConnectionState2} />
         </Col>  
       </Row>
       
       <Outlet context={
         {
-          left: [setLeftPairDidUpdate, setLeftPair],
-          right: [setRightPairDidUpdate, setRightPair]
+          left: {
+            leftPairConfigs,
+            leftPairWS,
+            id: 1
+          },
+          right: {
+            rightPairConfigs,
+            rightPairWS,
+            id: 2
+          }
         }}
       />
     </div>

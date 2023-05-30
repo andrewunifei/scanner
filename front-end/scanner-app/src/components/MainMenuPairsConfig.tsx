@@ -4,6 +4,8 @@ import { ToolOutlined } from '@ant-design/icons';
 import { useOutletContext } from 'react-router-dom';
 import pairProperties from '../interfaces/data/pairProperties';
 import { wsReFetch } from '../functions/wsFunctions';
+import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
+import { wsConnectionMechanics, wsUnsubscribe } from '../functions/wsFunctions';
 
 const style: React.CSSProperties = {
     color: '#1e1e1e'
@@ -16,14 +18,24 @@ const style2: React.CSSProperties = {
     padding: '0'
 }
 
+const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
+
 // interface configurationTools {
 //     left: React.Dispatch<React.SetStateAction<pairProperties>>,
 //     right: React.Dispatch<React.SetStateAction<pairProperties>>
 // }
 
 interface configurationTools {
-    left: [React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<React.SetStateAction<string>>],
-    right: [React.Dispatch<React.SetStateAction<boolean>>, React.Dispatch<React.SetStateAction<string>>]
+    left: {
+        leftPairConfigs: pairStreamConfigInterface,
+        leftPairWS: WebSocket,
+        id: number
+    },
+    right: {
+        rightPairConfigs: pairStreamConfigInterface,
+        rightPairWS: WebSocket,
+        id: number
+    }
 }
 
 function MainMenuPairsConfig() {
@@ -74,8 +86,16 @@ function MainMenuPairsConfig() {
                             //     color: '#fff',
                             //     backgroundColor: '#000'
                             // })
-                            pairsPackage.right[0](true)
-                            pairsPackage.right[1](rightTicker)
+                            // wsConnectionMechanics(ws, pair, id, setData, setButtonState, setConnectionState);
+                            wsUnsubscribe(pairsPackage.right.rightPairWS, pairsPackage.right.id);
+                            wsConnectionMechanics(
+                                pairsPackage.right.rightPairWS,
+                                rightTicker,
+                                pairsPackage.right.id,
+                                pairsPackage.right.rightPairConfigs.setData,  
+                                pairsPackage.right.rightPairConfigs.setButtonState,
+                                pairsPackage.right.rightPairConfigs.setConnectionState
+                            );
 
                             console.log(rightTicker)
                         }}
