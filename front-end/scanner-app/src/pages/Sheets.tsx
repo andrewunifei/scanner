@@ -1,6 +1,6 @@
 import React from 'react'
 import { Breadcrumb, Layout, Menu, Divider } from 'antd';
-import { SettingOutlined } from '@ant-design/icons';
+import { FileTextOutlined } from '@ant-design/icons';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -12,8 +12,8 @@ function Sheets() {
                 style={{ margin: '50px 0 20px 0' }}
                 items={[{ title: (
                 <>
-                    <SettingOutlined /> 
-                    <span>Configuration</span>
+                    <FileTextOutlined /> 
+                    <span>Sheets</span>
                 </>
                 )}]}
             />
