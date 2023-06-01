@@ -18,9 +18,8 @@ const items: MenuProps['items'] = [
     key: '/',
   },
   {
-    label: 'Navigation Two',
-    key: 'app',
-    disabled: true,
+    label: <Link to='/sheets'>Sheets</Link>,
+    key: '/sheets',
   },
   {
     label: <Link to='/configuration'>Configuration</Link>,
@@ -52,7 +51,7 @@ const assemblePair = (ticker: string, color: string, backgroundColor: string): p
 }
 
 const defaultLeftPair = assemblePair('btcusdt', '#F2A900', appColors.dark) 
-const defaultRightPair = assemblePair('ethusdt', '#ecf0f1', appColors.dark) 
+const defaultRightPair = assemblePair('linausdt', '#ecf0f1', appColors.dark) 
 
 const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");

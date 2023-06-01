@@ -74,8 +74,10 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
           <span style={tickerStyle}>{data.s}</span>
           <span style={timeframeStyle}> 24h</span>
           <br></br>
-          <span style={priceStyle}>{data.c.slice(0, -6) + ' | '}</span>
-          <span style={priceStyle}>{data.P.slice(0, -1) + '%'}</span>
+          {/* <span style={priceStyle}>{data.c.slice(0, -6) + ' | '}</span>
+          <span style={priceStyle}>{data.P.slice(0, -1) + '%'}</span> */}
+          <span style={priceStyle}>{data.c + ' | '}</span>
+          <span style={priceStyle}>{data.P + '%'}</span>
         </div>
       }
     </div>

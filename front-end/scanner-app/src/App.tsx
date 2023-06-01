@@ -3,6 +3,7 @@ import Layout from './pages/Layout';
 import Dashboard from './pages/Dashboard';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Configuration from './pages/Configuration';
+import Sheets from './pages/Sheets';
 
 function App() {
   return (
@@ -10,8 +11,9 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path='/' element={<Layout />}>
-            <Route index element={<Dashboard />} />
-            <Route path='configuration' element={<Configuration />}></Route>
+              <Route index element={<Dashboard />} />
+              <Route path='sheets' element={<Sheets />}></Route>
+              <Route path='configuration' element={<Configuration />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
