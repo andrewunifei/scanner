@@ -14,7 +14,10 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     ws, 
     pairStyle,
     connectionState, 
-    setConnectionState
+    setConnectionState,
+    setCloseAccess,
+    setOPCODE,
+    OPTION
   }: menuPairStreamPropsInterface) => {
 
   // Customization
@@ -33,20 +36,21 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
   }
 
   // Initialization
-  const [didMount, setDidMount] = useState<boolean>(true);
   const [data, setData] = useState<stream24hDataPropsInterface>(dummyPairObject);
 
   useEffect(() => {
-    if(didMount){
-      setDidMount(false);
+    switch(OPTION){
+      case 'CONNECTION':
+        setCloseAccess(true);
+        setOPCODE('CLOSEACCESS');
 
-      wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
+        wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
+        break;
+
+      default:
+        data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
     }
-    else{
-      console.log(data)
-      data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
-    }
-  }, [data]);
+  }, [data, ws]);
 
   return (
     <div>

@@ -44,12 +44,14 @@ interface pairStreamInterface {
   leftPairColor: string;
   leftPairBgColor: string;
   leftConnectionState: boolean;
+  leftOPTION: string;
   
   rightPairWS: WebSocket;
   rightPair: string;
   rightPairColor: string;
   rightPairBgColor: string;
   rightConnectionState: boolean;
+  rightOPTION: string
 }
 
 const Layout: React.FC = () => {
@@ -71,6 +73,7 @@ const Layout: React.FC = () => {
   const [rightConnectionState, setRightConnectionState] = useState<boolean>(false);
 
   const [OPCODE, setOPCODE] = useState<string>('');
+  const [closeAccess, setCloseAccess] = useState<boolean>(false);
 
   let pairStreamHoldings: pairStreamInterface = {
     leftPairWS,
@@ -78,12 +81,14 @@ const Layout: React.FC = () => {
     leftPairColor,
     leftPairBgColor,
     leftConnectionState,
+    leftOPTION: 'INITIALRENDER',
 
     rightPairWS,
     rightPair,
     rightPairColor,
     rightPairBgColor,
-    rightConnectionState
+    rightConnectionState,
+    rightOPTION: 'INITIALRENDER'
   };
 
   useEffect(() => {
@@ -115,8 +120,10 @@ const Layout: React.FC = () => {
       case 'SETRIGHTPAIRBGCOLOR':
         pairStreamHoldings.rightPairBgColor = rightPairBgColor;
         break;
-    }
 
+      case 'CLOSEACCESS':
+        if(closeAccess && 
+    }
   }, [OPCODE])
 
   // Layout configuration
@@ -142,6 +149,9 @@ const Layout: React.FC = () => {
             pairStyle={pairStyle(pairStreamHoldings.leftPairColor)}
             connectionState={leftConnectionState}
             setConnectionState={setLeftConnectionState} 
+            setCloseAccess={setCloseAccess}
+            setOPCODE={setOPCODE}
+            OPTION={pairStreamHoldings.leftOPTION}
           />
         </Col>
         <Col span={3} style={flexContainer}>
@@ -151,6 +161,9 @@ const Layout: React.FC = () => {
             pairStyle={pairStyle(pairStreamHoldings.rightPairColor)}
             connectionState={rightConnectionState}
             setConnectionState={setRightConnectionState} 
+            setCloseAccess={setCloseAccess}
+            setOPCODE={setOPCODE}
+            OPTION={pairStreamHoldings.rightOPTION}
           />
         </Col>  
       </Row>
