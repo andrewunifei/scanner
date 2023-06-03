@@ -65,15 +65,17 @@ const Layout: React.FC = () => {
   const [leftPairColor, setLeftPairColor] = useState<string>('#F2A900');
   const [leftPairBgColor, setLeftBgColor] = useState<string>(appColors.dark);
   const [leftConnectionState, setLeftConnectionState] = useState<boolean>(false);
+  const [leftOPTION, setLeftOPTION] = useState<string>('CONNECTION');
 
   const [rightPairWS, setRightWS] = useState<WebSocket>(initialRightPairWS);
   const [rightPair, setRightPair] = useState<string>('ethusdt');
   const [rightPairColor, setRightPairColor] = useState<string>('#ecf0f1');
   const [rightPairBgColor, setRightBgColor] = useState<string>(appColors.dark);
   const [rightConnectionState, setRightConnectionState] = useState<boolean>(false);
+  const [rightOPTION, setRightOPTION] = useState<string>('CONNECTION');
 
   const [OPCODE, setOPCODE] = useState<string>('');
-  const [closeAccess, setCloseAccess] = useState<boolean>(false);
+  const [closeAccess, setCloseAccess] = useState<(boolean | number)[]>([false, 0]);
 
   let pairStreamHoldings: pairStreamInterface = {
     leftPairWS,
@@ -81,14 +83,14 @@ const Layout: React.FC = () => {
     leftPairColor,
     leftPairBgColor,
     leftConnectionState,
-    leftOPTION: 'INITIALRENDER',
+    leftOPTION,
 
     rightPairWS,
     rightPair,
     rightPairColor,
     rightPairBgColor,
     rightConnectionState,
-    rightOPTION: 'INITIALRENDER'
+    rightOPTION
   };
 
   useEffect(() => {
@@ -122,7 +124,12 @@ const Layout: React.FC = () => {
         break;
 
       case 'CLOSEACCESS':
-        if(closeAccess && 
+        if(closeAccess[0] && closeAccess[1] == 1){
+          setLeftOPTION('DEFAULT');
+        }
+        else{
+          setRightOPTION('DEFAULT');
+        }
     }
   }, [OPCODE])
 
@@ -175,7 +182,8 @@ const Layout: React.FC = () => {
             setLeftPair,
             setLeftPairColor,
             setLeftBgColor,
-            setLeftConnectionState
+            setLeftConnectionState,
+            setLeftOPTION
           },
 
           right: {
@@ -184,7 +192,8 @@ const Layout: React.FC = () => {
             setRightPair,
             setRightPairColor,
             setRightBgColor,
-            setRightConnectionState
+            setRightConnectionState,
+            setRightOPTION
           },
 
           setOPCODE

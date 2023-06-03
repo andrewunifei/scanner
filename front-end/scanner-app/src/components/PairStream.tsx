@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
-import Unsubscribe from './Unsubscribe';
 import dummyPairObject from '../misc/dummyPairObject';
 import { wsConnectionMechanics } from '../functions/wsFunctions';
 import { Triangle } from  'react-loader-spinner'
 import menuPairStreamPropsInterface from '../interfaces/props/menuPairStreamProps';
 import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
-import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
 
 const PairStream: React.FC<menuPairStreamPropsInterface> = (
   { 
@@ -41,7 +39,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
   useEffect(() => {
     switch(OPTION){
       case 'CONNECTION':
-        setCloseAccess(true);
+        setCloseAccess([true, id]);
         setOPCODE('CLOSEACCESS');
 
         wsConnectionMechanics(ws, pair, id, setData, setConnectionState);

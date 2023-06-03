@@ -8,8 +8,6 @@ export function wsSubscribe(
     ): void{
         
     ws.addEventListener("open", (e) => {
-        setConnectionState(true);
-
         ws.send(
             JSON.stringify(
                 {
@@ -21,6 +19,8 @@ export function wsSubscribe(
                 }
             )
         );
+
+        setConnectionState(true);
     });
 }
 

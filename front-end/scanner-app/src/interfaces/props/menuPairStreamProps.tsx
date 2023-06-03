@@ -8,7 +8,7 @@ export default interface menuPairStreamPropsInterface{
   pairStyle: React.CSSProperties;
   connectionState: boolean;
   setConnectionState: React.Dispatch<React.SetStateAction<boolean>>;
-  setCloseAccess: React.Dispatch<React.SetStateAction<boolean>>;
+  setCloseAccess: React.Dispatch<React.SetStateAction<(boolean | number)[]>>;
   setOPCODE: React.Dispatch<React.SetStateAction<string>>;
   OPTION: string;
 }
