@@ -44,14 +44,12 @@ interface pairStreamInterface {
   leftPairColor: string;
   leftPairBgColor: string;
   leftConnectionState: boolean;
-  leftOPTION: string;
   
   rightPairWS: WebSocket;
   rightPair: string;
   rightPairColor: string;
   rightPairBgColor: string;
   rightConnectionState: boolean;
-  rightOPTION: string
 }
 
 const Layout: React.FC = () => {
@@ -65,17 +63,14 @@ const Layout: React.FC = () => {
   const [leftPairColor, setLeftPairColor] = useState<string>('#F2A900');
   const [leftPairBgColor, setLeftBgColor] = useState<string>(appColors.dark);
   const [leftConnectionState, setLeftConnectionState] = useState<boolean>(false);
-  const [leftOPTION, setLeftOPTION] = useState<string>('CONNECTION');
+  const [leftWSUpdateFlag, setLeftWSUpdateFlag] = useState<boolean>(false);
 
   const [rightPairWS, setRightWS] = useState<WebSocket>(initialRightPairWS);
   const [rightPair, setRightPair] = useState<string>('ethusdt');
   const [rightPairColor, setRightPairColor] = useState<string>('#ecf0f1');
   const [rightPairBgColor, setRightBgColor] = useState<string>(appColors.dark);
   const [rightConnectionState, setRightConnectionState] = useState<boolean>(false);
-  const [rightOPTION, setRightOPTION] = useState<string>('CONNECTION');
-
-  const [OPCODE, setOPCODE] = useState<string>('');
-  const [closeAccess, setCloseAccess] = useState<(boolean | number)[]>([false, 0]);
+  const [rightWSUpdateFlag, setRightWSUpdateFlag] = useState<boolean>(false);
 
   let pairStreamHoldings: pairStreamInterface = {
     leftPairWS,
@@ -83,55 +78,13 @@ const Layout: React.FC = () => {
     leftPairColor,
     leftPairBgColor,
     leftConnectionState,
-    leftOPTION,
 
     rightPairWS,
     rightPair,
     rightPairColor,
     rightPairBgColor,
-    rightConnectionState,
-    rightOPTION
+    rightConnectionState
   };
-
-  useEffect(() => {
-    switch(OPCODE){
-      // Left pair
-      case 'SETLEFTPAIR':
-        pairStreamHoldings.leftPairWS = leftPairWS;
-        pairStreamHoldings.leftPair = leftPair;
-        break;
-        
-      case 'SETLEFTPAIRCOLOR':
-        pairStreamHoldings.leftPairColor = leftPairColor;
-        break;
-      
-      case 'SETLEFTPAIRBGCOLOR':
-        pairStreamHoldings.leftPairBgColor = leftPairBgColor;
-        break;
-
-      // Right pair
-      case 'SETRIGHTPAIR':
-        pairStreamHoldings.rightPairWS = rightPairWS;
-        pairStreamHoldings.rightPair = rightPair;
-        break;
-
-      case 'SETRIGHTPAIRCOLOR':
-        pairStreamHoldings.rightPairColor = rightPairColor;
-        break;
-
-      case 'SETRIGHTPAIRBGCOLOR':
-        pairStreamHoldings.rightPairBgColor = rightPairBgColor;
-        break;
-
-      case 'CLOSEACCESS':
-        if(closeAccess[0] && closeAccess[1] == 1){
-          setLeftOPTION('DEFAULT');
-        }
-        else{
-          setRightOPTION('DEFAULT');
-        }
-    }
-  }, [OPCODE])
 
   // Layout configuration
   const location = useLocation();
@@ -155,10 +108,8 @@ const Layout: React.FC = () => {
             id={1} ws={pairStreamHoldings.leftPairWS} 
             pairStyle={pairStyle(pairStreamHoldings.leftPairColor)}
             connectionState={leftConnectionState}
+            WSUpdateFlag={leftWSUpdateFlag}
             setConnectionState={setLeftConnectionState} 
-            setCloseAccess={setCloseAccess}
-            setOPCODE={setOPCODE}
-            OPTION={pairStreamHoldings.leftOPTION}
           />
         </Col>
         <Col span={3} style={flexContainer}>
@@ -167,10 +118,8 @@ const Layout: React.FC = () => {
             id={2} ws={pairStreamHoldings.rightPairWS} 
             pairStyle={pairStyle(pairStreamHoldings.rightPairColor)}
             connectionState={rightConnectionState}
+            WSUpdateFlag={rightWSUpdateFlag}
             setConnectionState={setRightConnectionState} 
-            setCloseAccess={setCloseAccess}
-            setOPCODE={setOPCODE}
-            OPTION={pairStreamHoldings.rightOPTION}
           />
         </Col>  
       </Row>
@@ -183,7 +132,7 @@ const Layout: React.FC = () => {
             setLeftPairColor,
             setLeftBgColor,
             setLeftConnectionState,
-            setLeftOPTION
+            setLeftWSUpdateFlag
           },
 
           right: {
@@ -193,10 +142,8 @@ const Layout: React.FC = () => {
             setRightPairColor,
             setRightBgColor,
             setRightConnectionState,
-            setRightOPTION
-          },
-
-          setOPCODE
+            setRightWSUpdateFlag
+          }
         }}
       />
     </div>

@@ -2,11 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 import { useOutletContext } from 'react-router-dom';
-import pairProperties from '../interfaces/data/pairProperties';
-import { wsReFetch } from '../functions/wsFunctions';
-import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
 import { wsConnectionMechanics, wsUnsubscribe } from '../functions/wsFunctions';
-import { appColors } from '../colors';
 
 // Visual settings 
 const style: React.CSSProperties = {
@@ -29,7 +25,7 @@ interface configurationTools {
         setLeftPairColor: React.Dispatch<React.SetStateAction<string>>,
         setLeftBgColor: React.Dispatch<React.SetStateAction<string>>;
         setLeftConnectionState: React.Dispatch<React.SetStateAction<boolean>>;
-        setLeftOPTION: React.Dispatch<React.SetStateAction<string>>;
+        setLeftWSUpdateFlag: React.Dispatch<React.SetStateAction<boolean>>;
     },
 
     right: {
@@ -39,10 +35,8 @@ interface configurationTools {
         setRightPairColor: React.Dispatch<React.SetStateAction<string>>;
         setRightBgColor: React.Dispatch<React.SetStateAction<string>>;
         setRightConnectionState: React.Dispatch<React.SetStateAction<boolean>>;
-        setRightOPTION: React.Dispatch<React.SetStateAction<string>>;
-    },
-
-    setOPCODE: React.Dispatch<React.SetStateAction<string>>
+        setRightWSUpdateFlag: React.Dispatch<React.SetStateAction<boolean>>;
+    }
 }
 
 const MainMenuPairsConfig: React.FC = () => {
@@ -74,9 +68,23 @@ const MainMenuPairsConfig: React.FC = () => {
                 <Space direction="horizontal">
                     <span>Left pair</span>
                     <Input
-                    placeholder="BTCUSDT"
+                        placeholder="BTCUSDT"
+                        onChange={e => pairsPackage.left.setLeftPair(e.target.value.toLowerCase())}
                     />
-                    <Button style={{ width: 80 }} >
+                    <Button 
+                        style={{ width: 80 }}
+                        onClick={e => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 2);
+
+                            pairsPackage.left.setLeftWSUpdateFlag(true);        
+                    
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                    >
                     <ToolOutlined />
                     </Button>
                 </Space>
@@ -91,11 +99,11 @@ const MainMenuPairsConfig: React.FC = () => {
                     <Button 
                         style={{ width: 80 }} 
                         onClick={e => {
-                            wsUnsubscribe(pairsPackage.right.rightPairWS, 2, pairsPackage.right.setRightConnectionState);
-                            
-                            pairsPackage.right.setRightOPTION('CONNECTION');
-                            pairsPackage.setOPCODE('SETRIGHTPAIR');
+                            pairsPackage.right.setRightConnectionState(false);
+                            wsUnsubscribe(pairsPackage.right.rightPairWS, 2);
 
+                            pairsPackage.right.setRightWSUpdateFlag(true);        
+                    
                             pairsPackage.right.setRightWS(
                                 new WebSocket("wss://stream.binance.com:9443/ws")
                             );

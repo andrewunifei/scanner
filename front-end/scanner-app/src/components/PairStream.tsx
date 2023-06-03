@@ -12,10 +12,8 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     ws, 
     pairStyle,
     connectionState, 
-    setConnectionState,
-    setCloseAccess,
-    setOPCODE,
-    OPTION
+    WSUpdateFlag,
+    setConnectionState
   }: menuPairStreamPropsInterface) => {
 
   // Customization
@@ -42,8 +40,12 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
       setOpen(false);
       wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
     }
-    else{
+    else if(!WSUpdateFlag){
         data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
+    }
+
+    if(WSUpdateFlag){
+      wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
     }
   }, [data, ws]);
 
