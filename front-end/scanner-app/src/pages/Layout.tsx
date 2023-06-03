@@ -7,10 +7,6 @@ import { Outlet, Link, useLocation, useOutletContext } from "react-router-dom";
 import { Col, Row } from 'antd';
 import PairStream from '../components/PairStream';
 import { pairStyle } from '../css/MenuPairStreamStyle';
-import pairProperties from '../interfaces/data/pairProperties';
-import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
-import dummyTickerObject from '../misc/dummyTickerObject';
-import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
 
 const items: MenuProps['items'] = [
   {
@@ -44,14 +40,14 @@ const flexContainer: React.CSSProperties = {
 
 interface pairStreamInterface {
   leftPairWS: WebSocket;
-  leftTicker: string;
-  leftTickerColor: string;
-  leftBgColor: string;
+  leftPair: string;
+  leftPairColor: string;
+  leftPairBgColor: string;
   
   rightPairWS: WebSocket;
-  rightTicker: string;
-  rightTickerColor: string;
-  rightBgColor: string;
+  rightPair: string;
+  rightPairColor: string;
+  rightPairBgColor: string;
 }
 
 const Layout: React.FC = () => {
@@ -61,38 +57,58 @@ const Layout: React.FC = () => {
   const initialRightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
 
   const [leftPairWS, setLeftWS] = useState<WebSocket>(initialLeftPairWS);
-  const [leftTicker, setLeftTicker] = useState<string>('btcusdt');
-  const [leftTickerColor, setLeftTickerColor] = useState<string>('#F2A900');
-  const [leftBgColor, setLeftBgColor] = useState<string>(appColors.dark);
+  const [leftPair, setLeftPair] = useState<string>('btcusdt');
+  const [leftPairColor, setLeftPairColor] = useState<string>('#F2A900');
+  const [leftPairBgColor, setLeftBgColor] = useState<string>(appColors.dark);
 
   const [rightPairWS, setRightWS] = useState<WebSocket>(initialRightPairWS);
-  const [rightTicker, setRightTicker] = useState<string>('ethusdt');
-  const [rightTickerColor, setRightTickerColor] = useState<string>('#ecf0f1');
-  const [rightBgColor, setRightBgColor] = useState<string>(appColors.dark);
+  const [rightPair, setRightPair] = useState<string>('ethusdt');
+  const [rightPairColor, setRightPairColor] = useState<string>('#ecf0f1');
+  const [rightPairBgColor, setRightBgColor] = useState<string>(appColors.dark);
 
   const [OPCODE, setOPCODE] = useState<string>('');
 
   let pairStreamHoldings: pairStreamInterface = {
     leftPairWS,
-    leftTicker,
-    leftTickerColor,
-    leftBgColor,
+    leftPair,
+    leftPairColor,
+    leftPairBgColor,
 
     rightPairWS,
-    rightTicker,
-    rightTickerColor,
-    rightBgColor
+    rightPair,
+    rightPairColor,
+    rightPairBgColor
   };
 
   useEffect(() => {
     switch(OPCODE){
+      // Left pair
       case 'SETLEFTPAIR':
         pairStreamHoldings.leftPairWS = leftPairWS;
-        pairStreamHoldings.leftTicker = leftTicker;
+        pairStreamHoldings.leftPair = leftPair;
         break;
+        
+      case 'SETLEFTPAIRCOLOR':
+        pairStreamHoldings.leftPairColor = leftPairColor;
+        break;
+      
+      case 'SETLEFTPAIRBGCOLOR':
+        pairStreamHoldings.leftPairBgColor = leftPairBgColor;
+        break;
+
+      // Right pair
       case 'SETRIGHTPAIR':
         pairStreamHoldings.rightPairWS = rightPairWS;
-        pairStreamHoldings.rightTicker = rightTicker;
+        pairStreamHoldings.rightPair = rightPair;
+        break;
+
+      case 'SETRIGHTPAIRCOLOR':
+        pairStreamHoldings.rightPairColor = rightPairColor;
+        break;
+
+      case 'SETRIGHTPAIRBGCOLOR':
+        pairStreamHoldings.rightPairBgColor = rightPairBgColor;
+        break;
     }
 
   }, [OPCODE])
@@ -114,10 +130,10 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={pairStreamHoldings.leftTicker} id={1} ws={pairStreamHoldings.leftPairWS} tickerStyle={pairStyle(pairStreamHoldings.leftTickerColor)} />
+          <PairStream pair={pairStreamHoldings.leftPair} id={1} ws={pairStreamHoldings.leftPairWS} PairStyle={pairStyle(pairStreamHoldings.leftPairColor)} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={pairStreamHoldings.rightTicker} id={2} ws={pairStreamHoldings.rightPairWS} tickerStyle={pairStyle(pairStreamHoldings.rightTickerColor)} />
+          <PairStream pair={pairStreamHoldings.rightPair} id={2} ws={pairStreamHoldings.rightPairWS} PairStyle={pairStyle(pairStreamHoldings.rightPairColor)} />
         </Col>  
       </Row>
       
