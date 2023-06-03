@@ -12,13 +12,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     pair, 
     id, 
     ws, 
-    tickerStyle, 
-    data,
-    setData,
-    buttonState,
-    setButtonState,
-    connectionState,
-    setConnectionState
+    tickerStyle
   }: menuPairStreamPropsInterface) => {
 
   // Customization //

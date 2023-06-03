@@ -7,9 +7,9 @@ import MainMenuPairsConfig from '../components/MainMenuPairsConfig';
 import { useOutletContext } from 'react-router-dom';
 import pairProperties from '../interfaces/data/pairProperties';
 
-
 const { Header, Content, Footer, Sider } = Layout;
 
+// Visual settings
 const items2: MenuProps['items'] = [
   {
     label: 'Pairs',

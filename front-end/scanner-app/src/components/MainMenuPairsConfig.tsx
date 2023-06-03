@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 import { useOutletContext } from 'react-router-dom';
@@ -6,7 +6,9 @@ import pairProperties from '../interfaces/data/pairProperties';
 import { wsReFetch } from '../functions/wsFunctions';
 import pairStreamConfigInterface from '../interfaces/data/pairStreamConfig';
 import { wsConnectionMechanics, wsUnsubscribe } from '../functions/wsFunctions';
+import { appColors } from '../colors';
 
+// Visual settings 
 const style: React.CSSProperties = {
     color: '#1e1e1e'
 }
@@ -18,12 +20,17 @@ const style2: React.CSSProperties = {
     padding: '0'
 }
 
-const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
-
-// interface configurationTools {
-//     left: React.Dispatch<React.SetStateAction<pairProperties>>,
-//     right: React.Dispatch<React.SetStateAction<pairProperties>>
-// }
+// Configuration settings
+const assemblePair = (ticker: string, color: string, backgroundColor: string): pairProperties => {
+    return ({
+      ticker,
+      color,
+      backgroundColor
+    })
+  }
+  
+const defaultLeftPair = assemblePair('btcusdt', '#F2A900', appColors.dark) 
+const defaultRightPair = assemblePair('linausdt', '#ecf0f1', appColors.dark) 
 
 interface configurationTools {
     left: {
@@ -38,11 +45,26 @@ interface configurationTools {
     }
 }
 
-function MainMenuPairsConfig() {
+// Componnet interface
+interface componentInterface {
+    setInitialWebSocket: React.Dispatch<React.SetStateAction<WebSocket[]>>
+}
+
+const MainMenuPairsConfig: React.FC<componentInterface> = ({setInitialWebSocket}: componentInterface) => {
+    useEffect(() => {
+
+        setInitialWebSocket([leftPairWS, rightPairWS]);
+    })
+
+    const [tickerColor, setTickerColor] = useState({
+        leftTickerColor:'#F2A900', 
+        rightTickerColor:'#ecf0f1'
+    });
+
     const pairsPackage = useOutletContext<configurationTools>();
     const [rightTicker, setRightTicker] = useState('')
 
-  return (
+    return (
     <div>
         <Row>
             <Col span={24} style={style2}>
@@ -52,7 +74,7 @@ function MainMenuPairsConfig() {
                             colorSplit: '#F5F5F5'
                         },
                     }}
-                  >
+                    >
                     <Divider plain orientation='left'>
                         <span style={style}>Set pairs</span>
                     </Divider>
@@ -108,7 +130,7 @@ function MainMenuPairsConfig() {
         </Row>
             
     </div>
-  )
+    )
 }
 
 export default MainMenuPairsConfig

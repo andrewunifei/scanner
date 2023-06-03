@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PieChartTwoTone, SettingTwoTone } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
@@ -42,74 +42,71 @@ const flexContainer: React.CSSProperties = {
   background: appColors.dark
 }
 
-const assemblePair = (ticker: string, color: string, backgroundColor: string): pairProperties => {
-  return ({
-    ticker,
-    color,
-    backgroundColor
-  })
+interface pairStreamInterface {
+  leftPairWS: WebSocket;
+  leftTicker: string;
+  leftTickerColor: string;
+  leftBgColor: string;
+  
+  rightPairWS: WebSocket;
+  rightTicker: string;
+  rightTickerColor: string;
+  rightBgColor: string;
 }
 
-const defaultLeftPair = assemblePair('btcusdt', '#F2A900', appColors.dark) 
-const defaultRightPair = assemblePair('linausdt', '#ecf0f1', appColors.dark) 
-
-const leftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
-const rightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
-
 const Layout: React.FC = () => {
+
+  // Stream pair initial configuration
+  const initialLeftPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
+  const initialRightPairWS = new WebSocket("wss://stream.binance.com:9443/ws");
+
+  const [leftPairWS, setLeftWS] = useState<WebSocket>(initialLeftPairWS);
+  const [leftTicker, setLeftTicker] = useState<string>('btcusdt');
+  const [leftTickerColor, setLeftTickerColor] = useState<string>('#F2A900');
+  const [leftBgColor, setLeftBgColor] = useState<string>(appColors.dark);
+
+  const [rightPairWS, setRightWS] = useState<WebSocket>(initialRightPairWS);
+  const [rightTicker, setRightTicker] = useState<string>('ethusdt');
+  const [rightTickerColor, setRightTickerColor] = useState<string>('#ecf0f1');
+  const [rightBgColor, setRightBgColor] = useState<string>(appColors.dark);
+
+  const [OPCODE, setOPCODE] = useState<string>('');
+
+  let pairStreamHoldings: pairStreamInterface = {
+    leftPairWS,
+    leftTicker,
+    leftTickerColor,
+    leftBgColor,
+
+    rightPairWS,
+    rightTicker,
+    rightTickerColor,
+    rightBgColor
+  };
+
+  useEffect(() => {
+    switch(OPCODE){
+      case 'SETLEFTPAIR':
+        pairStreamHoldings.leftPairWS = leftPairWS;
+        pairStreamHoldings.leftTicker = leftTicker;
+        break;
+      case 'SETRIGHTPAIR':
+        pairStreamHoldings.rightPairWS = rightPairWS;
+        pairStreamHoldings.rightTicker = rightTicker;
+    }
+
+  }, [OPCODE])
+
+  // Layout configuration
   const location = useLocation();
   const [current, setCurrent] = useState(location.pathname);
-  const [tickerColor, setTickerColor] = useState({
-    leftTickerColor:'#F2A900', 
-    rightTickerColor:'#ecf0f1'
-  });
-  const [leftPairDidUpdate, setLeftPairDidUpdate] = useState(true);
-  const [rightPairDidUpdate, setRightPairDidUpdate] = useState(true);
-
-  const [leftPair, setLeftPair] = useState(defaultLeftPair.ticker);
-  const [rightPair, setRightPair] = useState(defaultRightPair.ticker);
-
-  // const [leftPairDetails, setLeftPairDetails] = useState(defaultLeftPair)
-  // const [rightPairDetails, setRightPairDetails] = useState(defaultRightPair)
 
   const onClick: MenuProps['onClick'] = (e) => {
     console.log('click ', e);
     setCurrent(e.key);
-  };  
+  };
 
-    // Stream pair configuration //
-    const [buttonState, setButtonState] = useState(true);
-    const [connectionState, setConnectionState] = useState(false);
-    const [data, setData] = useState<stream24hDataPropsInterface>(dummyTickerObject);
-  
-    const configurationFunctions: pairStreamConfigInterface = {
-      setData,
-      setButtonState, 
-      setConnectionState
-    }
-
-    const [buttonState2, setButtonState2] = useState(true);
-    const [connectionState2, setConnectionState2] = useState(false);
-    const [data2, setData2] = useState<stream24hDataPropsInterface>(dummyTickerObject);
-  
-    const configurationFunctions2: pairStreamConfigInterface = {
-      setData: setData2,
-      setButtonState: setButtonState2, 
-      setConnectionState: setConnectionState2
-    }
-    ////
-
-  const [leftPairConfigs, setLeftPairConfigs] = useState<pairStreamConfigInterface>({
-    setData,
-    setButtonState,
-    setConnectionState
-  });
-  const [rightPairConfigs, setRightPairConfigs] = useState<pairStreamConfigInterface>({
-    setData: setData2,
-    setButtonState: setButtonState2, 
-    setConnectionState: setConnectionState2
-  });
-
+  // Display configuration
   return (
     <div>
       <Row style={{height: '5vh'}}>
@@ -117,26 +114,18 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={leftPair} id={1} ws={leftPairWS} tickerStyle={pairStyle(tickerColor.leftTickerColor)} data={data} setData={setData} buttonState={buttonState} setButtonState={setButtonState} connectionState={connectionState} setConnectionState={setConnectionState} />
+          <PairStream pair={pairStreamHoldings.leftTicker} id={1} ws={pairStreamHoldings.leftPairWS} tickerStyle={pairStyle(pairStreamHoldings.leftTickerColor)} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={rightPair} id={2} ws={rightPairWS} tickerStyle={pairStyle(tickerColor.rightTickerColor)} data={data2} setData={setData2} buttonState={buttonState2} setButtonState={setButtonState2} connectionState={connectionState2} setConnectionState={setConnectionState2} />
+          <PairStream pair={pairStreamHoldings.rightTicker} id={2} ws={pairStreamHoldings.rightPairWS} tickerStyle={pairStyle(pairStreamHoldings.rightTickerColor)} />
         </Col>  
       </Row>
       
       <Outlet context={
         {
-          left: {
-            leftPairConfigs,
-            leftPairWS,
-            id: 1
-          },
-          right: {
-            rightPairConfigs,
-            rightPairWS,
-            id: 2
-          }
-        }}
+          setWebSockets,
+        }
+      }
       />
     </div>
   )
