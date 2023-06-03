@@ -21,47 +21,31 @@ const style2: React.CSSProperties = {
 }
 
 // Configuration settings
-const assemblePair = (ticker: string, color: string, backgroundColor: string): pairProperties => {
-    return ({
-      ticker,
-      color,
-      backgroundColor
-    })
-  }
-  
-const defaultLeftPair = assemblePair('btcusdt', '#F2A900', appColors.dark) 
-const defaultRightPair = assemblePair('linausdt', '#ecf0f1', appColors.dark) 
-
 interface configurationTools {
     left: {
-        leftPairConfigs: pairStreamConfigInterface,
-        leftPairWS: WebSocket,
-        id: number
+        leftPairWS: WebSocket;
+        setLeftWS: React.Dispatch<React.SetStateAction<WebSocket>>;
+        setLeftPair: React.Dispatch<React.SetStateAction<string>>;
+        setLeftPairColor: React.Dispatch<React.SetStateAction<string>>,
+        setLeftBgColor: React.Dispatch<React.SetStateAction<string>>;
     },
+
     right: {
-        rightPairConfigs: pairStreamConfigInterface,
-        rightPairWS: WebSocket,
-        id: number
-    }
+        rightPairWS: WebSocket;
+        setRightWS: React.Dispatch<React.SetStateAction<WebSocket>>;
+        setRightPair: React.Dispatch<React.SetStateAction<string>>;
+        setRightPairColor: React.Dispatch<React.SetStateAction<string>>;
+        setRightBgColor: React.Dispatch<React.SetStateAction<string>>;
+    },
+
+    setOPCODE: React.Dispatch<React.SetStateAction<string>>
 }
 
-// Componnet interface
-interface componentInterface {
-    setInitialWebSocket: React.Dispatch<React.SetStateAction<WebSocket[]>>
-}
-
-const MainMenuPairsConfig: React.FC<componentInterface> = ({setInitialWebSocket}: componentInterface) => {
-    useEffect(() => {
-
-        setInitialWebSocket([leftPairWS, rightPairWS]);
-    })
-
-    const [tickerColor, setTickerColor] = useState({
-        leftTickerColor:'#F2A900', 
-        rightTickerColor:'#ecf0f1'
-    });
+const MainMenuPairsConfig: React.FC = () => {
 
     const pairsPackage = useOutletContext<configurationTools>();
+
+    const [leftTicker, setLeftTicker] = useState('')
     const [rightTicker, setRightTicker] = useState('')
 
     return (
@@ -98,28 +82,18 @@ const MainMenuPairsConfig: React.FC<componentInterface> = ({setInitialWebSocket}
                     <span>Right pair</span>
                     <Input
                         placeholder="ETHUSDT"
-                        onChange={e => setRightTicker(e.target.value)}
-                    />
+                        onChange={e => pairsPackage.right.setRightPair(e.target.value.toLowerCase())}
+                    /> 
                     <Button 
                         style={{ width: 80 }} 
                         onClick={e => {
-                            // pairsPackage.right({
-                            //     ticker: rightTicker,
-                            //     color: '#fff',
-                            //     backgroundColor: '#000'
-                            // })
-                            // wsConnectionMechanics(ws, pair, id, setData, setButtonState, setConnectionState);
-                            wsUnsubscribe(pairsPackage.right.rightPairWS, pairsPackage.right.id);
-                            wsConnectionMechanics(
-                                pairsPackage.right.rightPairWS,
-                                rightTicker,
-                                pairsPackage.right.id,
-                                pairsPackage.right.rightPairConfigs.setData,  
-                                pairsPackage.right.rightPairConfigs.setButtonState,
-                                pairsPackage.right.rightPairConfigs.setConnectionState
-                            );
+                            wsUnsubscribe(pairsPackage.right.rightPairWS, 2)
 
-                            console.log(rightTicker)
+                            pairsPackage.right.setRightWS(
+                               new WebSocket("wss://stream.binance.com:9443/ws")
+                            )
+
+                            pairsPackage.setOPCODE('SETRIGHTPAIR')
                         }}
                     >
                     <ToolOutlined />

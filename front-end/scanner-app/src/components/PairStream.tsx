@@ -12,7 +12,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     pair, 
     id, 
     ws, 
-    tickerStyle
+    pairStyle
   }: menuPairStreamPropsInterface) => {
 
   // Customization //
@@ -65,7 +65,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
       {
         connectionState &&
         <div>
-          <span style={tickerStyle}>{data.s}</span>
+          <span style={pairStyle}>{data.s}</span>
           <span style={timeframeStyle}> 24h</span>
           <br></br>
           {/* <span style={priceStyle}>{data.c.slice(0, -6) + ' | '}</span>

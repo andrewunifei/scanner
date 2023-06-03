@@ -130,18 +130,32 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={pairStreamHoldings.leftPair} id={1} ws={pairStreamHoldings.leftPairWS} PairStyle={pairStyle(pairStreamHoldings.leftPairColor)} />
+          <PairStream pair={pairStreamHoldings.leftPair} id={1} ws={pairStreamHoldings.leftPairWS} pairStyle={pairStyle(pairStreamHoldings.leftPairColor)} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={pairStreamHoldings.rightPair} id={2} ws={pairStreamHoldings.rightPairWS} PairStyle={pairStyle(pairStreamHoldings.rightPairColor)} />
+          <PairStream pair={pairStreamHoldings.rightPair} id={2} ws={pairStreamHoldings.rightPairWS} pairStyle={pairStyle(pairStreamHoldings.rightPairColor)} />
         </Col>  
       </Row>
       
-      <Outlet context={
-        {
-          setWebSockets,
-        }
-      }
+      <Outlet context={{
+          left: {
+            leftPairWS,
+            setLeftWS,
+            setLeftPair,
+            setLeftPairColor,
+            setLeftBgColor
+          },
+          
+          right: {
+            rightPairWS,
+            setRightWS,
+            setRightPair,
+            setRightPairColor,
+            setRightBgColor
+          },
+
+          setOPCODE
+        }}
       />
     </div>
   )
