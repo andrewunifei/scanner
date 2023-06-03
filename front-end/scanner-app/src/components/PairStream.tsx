@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Unsubscribe from './Unsubscribe';
-import dummyTickerObject from '../misc/dummyTickerObject';
+import dummyPairObject from '../misc/dummyPairObject';
 import { wsConnectionMechanics } from '../functions/wsFunctions';
 import { Triangle } from  'react-loader-spinner'
 import menuPairStreamPropsInterface from '../interfaces/props/menuPairStreamProps';
@@ -12,10 +12,12 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     pair, 
     id, 
     ws, 
-    pairStyle
+    pairStyle,
+    connectionState, 
+    setConnectionState
   }: menuPairStreamPropsInterface) => {
 
-  // Customization //
+  // Customization
   const [textColor, setTextColor] = useState<string>('');
 
   const priceStyle: React.CSSProperties = {
@@ -29,24 +31,22 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     fontSize: '12px',
     whiteSpace: "nowrap"
   }
-  ////
 
-  // Initialization //
+  // Initialization
   const [didMount, setDidMount] = useState<boolean>(true);
+  const [data, setData] = useState<stream24hDataPropsInterface>(dummyPairObject);
 
   useEffect(() => {
     if(didMount){
       setDidMount(false);
 
-      wsConnectionMechanics(ws, pair, id, setData, setButtonState, setConnectionState);
+      wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
     }
     else{
       console.log(data)
       data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
-      setButtonState(true)
     }
   }, [data]);
-  ////
 
   return (
     <div>

@@ -28,6 +28,7 @@ interface configurationTools {
         setLeftPair: React.Dispatch<React.SetStateAction<string>>;
         setLeftPairColor: React.Dispatch<React.SetStateAction<string>>,
         setLeftBgColor: React.Dispatch<React.SetStateAction<string>>;
+        setLeftConnectionState: React.Dispatch<React.SetStateAction<boolean>>;
     },
 
     right: {
@@ -36,6 +37,7 @@ interface configurationTools {
         setRightPair: React.Dispatch<React.SetStateAction<string>>;
         setRightPairColor: React.Dispatch<React.SetStateAction<string>>;
         setRightBgColor: React.Dispatch<React.SetStateAction<string>>;
+        setRightConnectionState: React.Dispatch<React.SetStateAction<boolean>>;
     },
 
     setOPCODE: React.Dispatch<React.SetStateAction<string>>
@@ -87,7 +89,7 @@ const MainMenuPairsConfig: React.FC = () => {
                     <Button 
                         style={{ width: 80 }} 
                         onClick={e => {
-                            wsUnsubscribe(pairsPackage.right.rightPairWS, 2)
+                            wsUnsubscribe(pairsPackage.right.rightPairWS, 2, pairsPackage.right.setRightConnectionState)
 
                             pairsPackage.right.setRightWS(
                                new WebSocket("wss://stream.binance.com:9443/ws")

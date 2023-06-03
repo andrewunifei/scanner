@@ -5,5 +5,7 @@ export default interface menuPairStreamPropsInterface{
   pair: string;
   id: number;
   ws: WebSocket;
+  connectionState: boolean;
+  setConnectionState: React.Dispatch<React.SetStateAction<boolean>>;
   pairStyle: React.CSSProperties;
 }

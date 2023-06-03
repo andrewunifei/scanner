@@ -1,7 +1,15 @@
 import stream24hDataPropsInterface from "../interfaces/data/stream24hData";
 
-export function wsSubscribe(pair: string, ws: WebSocket, id: number): void{
+export function wsSubscribe(
+        pair: string,
+        ws: WebSocket, 
+        id: number,
+        setConnectionState: React.Dispatch<React.SetStateAction<boolean>>
+    ): void{
+        
     ws.addEventListener("open", (e) => {
+        setConnectionState(true);
+
         ws.send(
             JSON.stringify(
                 {
@@ -16,7 +24,12 @@ export function wsSubscribe(pair: string, ws: WebSocket, id: number): void{
     });
 }
 
-export function wsUnsubscribe(ws: WebSocket, id: number){
+export function wsUnsubscribe(
+        ws: WebSocket, 
+        id: number, 
+        setConnectionState: React.Dispatch<React.SetStateAction<boolean>>
+    ){
+
     if (ws.readyState === 1) {
         ws.send(
             JSON.stringify(
@@ -26,9 +39,12 @@ export function wsUnsubscribe(ws: WebSocket, id: number){
                 }
             )
         );
-        
-        ws.close();
 
+        ws.addEventListener("close", (e) => {
+            setConnectionState(false);
+        });
+
+        ws.close();
     }
 };
 
@@ -37,25 +53,17 @@ export function wsConnectionMechanics(
         pair: string,
         id: number,
         setData: React.Dispatch<React.SetStateAction<stream24hDataPropsInterface>>,
-        setButtonState: React.Dispatch<React.SetStateAction<boolean>>,
         setConnectionState: React.Dispatch<React.SetStateAction<boolean>>
     ){
 
-    console.log(pair)
-
-    wsSubscribe(pair, ws, id);
+    wsSubscribe(pair, ws, id, setConnectionState);
 
     ws.addEventListener("message", (e) => {
         if(!e.data.includes("id")){
             let parsed = JSON.parse(e.data);
             setData(parsed);
-            setConnectionState(true);
         }
     });
-    
-    ws.onopen = (e) => {
-        setButtonState(false);
-    }
 };
 
 export function wsReFetch(

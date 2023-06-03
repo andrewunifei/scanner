@@ -43,11 +43,13 @@ interface pairStreamInterface {
   leftPair: string;
   leftPairColor: string;
   leftPairBgColor: string;
+  leftConnectionState: boolean;
   
   rightPairWS: WebSocket;
   rightPair: string;
   rightPairColor: string;
   rightPairBgColor: string;
+  rightConnectionState: boolean;
 }
 
 const Layout: React.FC = () => {
@@ -60,11 +62,13 @@ const Layout: React.FC = () => {
   const [leftPair, setLeftPair] = useState<string>('btcusdt');
   const [leftPairColor, setLeftPairColor] = useState<string>('#F2A900');
   const [leftPairBgColor, setLeftBgColor] = useState<string>(appColors.dark);
+  const [leftConnectionState, setLeftConnectionState] = useState<boolean>(false);
 
   const [rightPairWS, setRightWS] = useState<WebSocket>(initialRightPairWS);
   const [rightPair, setRightPair] = useState<string>('ethusdt');
   const [rightPairColor, setRightPairColor] = useState<string>('#ecf0f1');
   const [rightPairBgColor, setRightBgColor] = useState<string>(appColors.dark);
+  const [rightConnectionState, setRightConnectionState] = useState<boolean>(false);
 
   const [OPCODE, setOPCODE] = useState<string>('');
 
@@ -73,11 +77,13 @@ const Layout: React.FC = () => {
     leftPair,
     leftPairColor,
     leftPairBgColor,
+    leftConnectionState,
 
     rightPairWS,
     rightPair,
     rightPairColor,
-    rightPairBgColor
+    rightPairBgColor,
+    rightConnectionState
   };
 
   useEffect(() => {
@@ -130,10 +136,22 @@ const Layout: React.FC = () => {
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={pairStreamHoldings.leftPair} id={1} ws={pairStreamHoldings.leftPairWS} pairStyle={pairStyle(pairStreamHoldings.leftPairColor)} />
+          <PairStream 
+            pair={pairStreamHoldings.leftPair} 
+            id={1} ws={pairStreamHoldings.leftPairWS} 
+            pairStyle={pairStyle(pairStreamHoldings.leftPairColor)}
+            connectionState={leftConnectionState}
+            setConnectionState={setLeftConnectionState} 
+          />
         </Col>
         <Col span={3} style={flexContainer}>
-          <PairStream pair={pairStreamHoldings.rightPair} id={2} ws={pairStreamHoldings.rightPairWS} pairStyle={pairStyle(pairStreamHoldings.rightPairColor)} />
+          <PairStream 
+            pair={pairStreamHoldings.rightPair} 
+            id={2} ws={pairStreamHoldings.rightPairWS} 
+            pairStyle={pairStyle(pairStreamHoldings.rightPairColor)}
+            connectionState={rightConnectionState}
+            setConnectionState={setRightConnectionState} 
+          />
         </Col>  
       </Row>
       
@@ -143,15 +161,17 @@ const Layout: React.FC = () => {
             setLeftWS,
             setLeftPair,
             setLeftPairColor,
-            setLeftBgColor
+            setLeftBgColor,
+            setLeftConnectionState
           },
-          
+
           right: {
             rightPairWS,
             setRightWS,
             setRightPair,
             setRightPairColor,
-            setRightBgColor
+            setRightBgColor,
+            setRightConnectionState
           },
 
           setOPCODE
