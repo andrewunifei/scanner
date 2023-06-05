@@ -108,7 +108,6 @@ const Layout: React.FC = () => {
             id={1} ws={pairStreamHoldings.leftPairWS} 
             pairStyle={pairStyle(pairStreamHoldings.leftPairColor)}
             connectionState={leftConnectionState}
-            WSUpdateFlag={leftWSUpdateFlag}
             setConnectionState={setLeftConnectionState} 
           />
         </Col>
@@ -118,7 +117,6 @@ const Layout: React.FC = () => {
             id={2} ws={pairStreamHoldings.rightPairWS} 
             pairStyle={pairStyle(pairStreamHoldings.rightPairColor)}
             connectionState={rightConnectionState}
-            WSUpdateFlag={rightWSUpdateFlag}
             setConnectionState={setRightConnectionState} 
           />
         </Col>  

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import dummyPairObject from '../misc/dummyPairObject';
-import { wsConnectionMechanics } from '../functions/wsFunctions';
+import { wsConnectionMechanics, wsUnsubscribe } from '../functions/wsFunctions';
 import { Triangle } from  'react-loader-spinner'
 import menuPairStreamPropsInterface from '../interfaces/props/menuPairStreamProps';
 import stream24hDataPropsInterface from '../interfaces/data/stream24hData';
@@ -12,7 +12,6 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
     ws, 
     pairStyle,
     connectionState, 
-    WSUpdateFlag,
     setConnectionState
   }: menuPairStreamPropsInterface) => {
 
@@ -34,20 +33,27 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
   // Initialization
   const [data, setData] = useState<stream24hDataPropsInterface>(dummyPairObject);
   const [open, setOpen] = useState<boolean>(true)
+  const [key, setKey] = useState<boolean>(true)
 
   useEffect(() => {
     if(open){
       setOpen(false);
-      wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
+      wsConnectionMechanics(
+        ws, 
+        pair, 
+        id, 
+        setData, 
+        setConnectionState
+      );
     }
-    else if(!WSUpdateFlag){
+    else{
         data.P.includes('-') ? setTextColor('#eb4034') : setTextColor('#90ee90');
     }
+  }, [data]);
 
-    if(WSUpdateFlag){
-      wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
-    }
-  }, [data, ws]);
+  useEffect(() => {
+    wsConnectionMechanics(ws, pair, id, setData, setConnectionState);
+  }, [ws])
 
   return (
     <div>
