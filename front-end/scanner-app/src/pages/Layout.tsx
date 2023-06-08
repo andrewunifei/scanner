@@ -88,11 +88,15 @@ const Layout: React.FC = () => {
     setCurrent(e.key);
   };
 
-  const pairContainer: React.CSSProperties = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: appColors.dark
+  const pairContainerStyle = (bgColor: string) => {
+    const pairContainer: React.CSSProperties = {
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      background: bgColor
+    }
+
+    return pairContainer;
   }
 
   // Display configuration
@@ -102,7 +106,7 @@ const Layout: React.FC = () => {
         <Col span={18}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
-        <Col span={3} style={pairContainer}>
+        <Col span={3} style={pairContainerStyle(leftPairBgColor)}>
           <PairStream 
             pair={pairStreamHoldings.leftPair} 
             id={1} ws={pairStreamHoldings.leftPairWS} 
@@ -111,7 +115,7 @@ const Layout: React.FC = () => {
             setConnectionState={setLeftConnectionState} 
           />
         </Col>
-        <Col span={3} style={pairContainer}>
+        <Col span={3} style={pairContainerStyle(rightPairBgColor)}>
           <PairStream 
             pair={pairStreamHoldings.rightPair} 
             id={2} ws={pairStreamHoldings.rightPairWS} 

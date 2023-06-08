@@ -109,12 +109,12 @@ const MainMenuPairsConfig: React.FC = () => {
                 <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
                         <InputConfig 
                             title="Set right pair"
-                            setVariable={pairsPackage.left.setLeftPair}
+                            setVariable={pairsPackage.right.setRightPair}
                             eventCallBack={() => {
-                                pairsPackage.left.setLeftConnectionState(false);
-                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                                pairsPackage.right.setRightConnectionState(false);
+                                wsUnsubscribe(pairsPackage.right.rightPairWS, 1); 
 
-                                pairsPackage.left.setLeftWS(
+                                pairsPackage.right.setRightWS(
                                     new WebSocket("wss://stream.binance.com:9443/ws")
                                 );
                             }}
@@ -123,28 +123,18 @@ const MainMenuPairsConfig: React.FC = () => {
 
                         <InputConfig 
                             title="Set right pair color"
-                            setVariable={pairsPackage.left.setLeftPair}
+                            setVariable={setRightCustom}
                             eventCallBack={() => {
-                                pairsPackage.left.setLeftConnectionState(false);
-                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
-
-                                pairsPackage.left.setLeftWS(
-                                    new WebSocket("wss://stream.binance.com:9443/ws")
-                                );
+                                pairsPackage.right.setRightPairColor(rightCustom);
                             }}
                             inputPlaceholder={"#ecf0f1"}
                         />
 
                         <InputConfig 
                             title="Set right background color"
-                            setVariable={pairsPackage.left.setLeftPair}
+                            setVariable={setRightCustom}
                             eventCallBack={() => {
-                                pairsPackage.left.setLeftConnectionState(false);
-                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
-
-                                pairsPackage.left.setLeftWS(
-                                    new WebSocket("wss://stream.binance.com:9443/ws")
-                                );
+                                pairsPackage.right.setRightBgColor(rightCustom);
                             }}
                             inputPlaceholder={"#282C34"}
                         />
