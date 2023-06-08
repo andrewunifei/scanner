@@ -3,6 +3,7 @@ import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 import { useOutletContext } from 'react-router-dom';
 import { wsConnectionMechanics, wsUnsubscribe } from '../functions/wsFunctions';
+import InputConfig from './InputConfig';
 
 // Visual settings 
 const style: React.CSSProperties = {
@@ -62,160 +63,102 @@ const MainMenuPairsConfig: React.FC = () => {
                     </Divider>
                 </ConfigProvider>
             </Col>
+        </Row>
 
             {/* setRightPairColor: React.Dispatch<React.SetStateAction<string>>;
-        setRightBgColor: React.Dispatch<React.SetStateAction<string>>; */}
+            setRightBgColor: React.Dispatch<React.SetStateAction<string>>; */}
+        <Row justify="center">
+            <Col span={8} style={style2}>
+                <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
+                    <InputConfig 
+                        title="Set left pair"
+                        setVariable={pairsPackage.left.setLeftPair}
+                        eventCallBack={() => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-            <Col span={12} style={style2}>
-                <Space direction='vertical'>
-                    <Row justify="start">
-                        <Col span={8}>
-                            <span>Left pair</span>
-                        </Col>
-                        <Col span={8}>
-                            <Input
-                                placeholder="BTCUSDT"
-                                onChange={e => pairsPackage.left.setLeftPair(e.target.value.toLowerCase())}
-                            />
-                        </Col>
-                        <Col span={8}>
-                        <Button 
-                                style={{ width: 80 }}
-                                onClick={e => { 
-                                    pairsPackage.left.setLeftConnectionState(false);
-                                    wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                        inputPlaceholder={"BTCUSDT"}
+                    />
 
-                                    pairsPackage.left.setLeftWS(
-                                        new WebSocket("wss://stream.binance.com:9443/ws")
-                                    );
-                                }}
-                            >
-                            <ToolOutlined />
-                            </Button>
-                        </Col>
-                    
-                    </Row>
-                    <Row justify="space-between">
-                        <Col span={8}>
-                            <span>Left pair color</span>
-                        </Col>
-                        <Col span={8}>
-                            <Input
-                                placeholder="BTCUSDT"
-                                onChange={e => pairsPackage.left.setLeftPair(e.target.value.toLowerCase())}
-                            />
-                        </Col>
-                        <Col span={8}>
-                        <Button 
-                                style={{ width: 80 }}
-                                onClick={e => { 
-                                    pairsPackage.left.setLeftConnectionState(false);
-                                    wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                    <InputConfig 
+                        title="Set left pair color"
+                        setVariable={pairsPackage.left.setLeftPair}
+                        eventCallBack={() => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-                                    pairsPackage.left.setLeftWS(
-                                        new WebSocket("wss://stream.binance.com:9443/ws")
-                                    );
-                                }}
-                            >
-                            <ToolOutlined />
-                            </Button>
-                        </Col>
-                    
-                    </Row>
-                    <Row justify="space-between">
-                        <Col span={8}>
-                            <span>Left background color</span>
-                        </Col>
-                        <Col span={8}>
-                            <Input
-                                placeholder="BTCUSDT"
-                                onChange={e => pairsPackage.left.setLeftPair(e.target.value.toLowerCase())}
-                            />
-                        </Col>
-                        <Col span={8}>
-                        <Button 
-                                style={{ width: 80 }}
-                                onClick={e => { 
-                                    pairsPackage.left.setLeftConnectionState(false);
-                                    wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                        inputPlaceholder={"#F2A900"}
+                    />
 
-                                    pairsPackage.left.setLeftWS(
-                                        new WebSocket("wss://stream.binance.com:9443/ws")
-                                    );
-                                }}
-                            >
-                            <ToolOutlined />
-                            </Button>
-                        </Col>
-                    
-                    </Row>
+                    <InputConfig 
+                        title="Set left background color"
+                        setVariable={pairsPackage.left.setLeftPair}
+                        eventCallBack={() => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                        inputPlaceholder={"#282C34"}
+                    />
                 </Space>
             </Col>
-            <Col span={12} style={style2}>
-                <Space direction='vertical'>
-                    <Space direction="horizontal">
-                        <span>Right pair</span>
-                        <Input
-                            placeholder="ETHUSDT"
-                            onChange={e => pairsPackage.right.setRightPair(e.target.value.toLowerCase())}
-                        /> 
-                        <Button 
-                            style={{ width: 80 }} 
-                            onClick={e => {
-                                pairsPackage.right.setRightConnectionState(false);
-                                wsUnsubscribe(pairsPackage.right.rightPairWS, 2);      
-                        
-                                pairsPackage.right.setRightWS(
-                                    new WebSocket("wss://stream.binance.com:9443/ws")
-                                );
-                            }}
-                        >
-                        <ToolOutlined />
-                        </Button>
-                    </Space>
-                    <Space direction="horizontal">
-                        <span>Left pair</span>
-                        <Input
-                            placeholder="BTCUSDT"
-                            onChange={e => pairsPackage.left.setLeftPair(e.target.value.toLowerCase())}
-                        />
-                        <Button 
-                            style={{ width: 80 }}
-                            onClick={e => { 
-                                pairsPackage.left.setLeftConnectionState(false);
-                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-                                pairsPackage.left.setLeftWS(
-                                    new WebSocket("wss://stream.binance.com:9443/ws")
-                                );
-                            }}
-                        >
-                        <ToolOutlined />
-                        </Button>
-                    </Space>
-                    <Space direction="horizontal">
-                        <span>Left pair</span>
-                        <Input
-                            placeholder="BTCUSDT"
-                            onChange={e => pairsPackage.left.setLeftPair(e.target.value.toLowerCase())}
-                        />
-                        <Button 
-                            style={{ width: 80 }}
-                            onClick={e => { 
-                                pairsPackage.left.setLeftConnectionState(false);
-                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+            <Col span={8} style={style2}>
+            <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
+                    <InputConfig 
+                        title="Set right pair"
+                        setVariable={pairsPackage.left.setLeftPair}
+                        eventCallBack={() => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-                                pairsPackage.left.setLeftWS(
-                                    new WebSocket("wss://stream.binance.com:9443/ws")
-                                );
-                            }}
-                        >
-                        <ToolOutlined />
-                        </Button>
-                    </Space>
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                        inputPlaceholder={"BTCUSDT"}
+                    />
+
+                    <InputConfig 
+                        title="Set right pair color"
+                        setVariable={pairsPackage.left.setLeftPair}
+                        eventCallBack={() => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                        inputPlaceholder={"#F2A900"}
+                    />
+
+                    <InputConfig 
+                        title="Set right background color"
+                        setVariable={pairsPackage.left.setLeftPair}
+                        eventCallBack={() => {
+                            pairsPackage.left.setLeftConnectionState(false);
+                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+
+                            pairsPackage.left.setLeftWS(
+                                new WebSocket("wss://stream.binance.com:9443/ws")
+                            );
+                        }}
+                        inputPlaceholder={"#282C34"}
+                    />
                 </Space>
             </Col>
-            <Col span={8} style={style2}></Col>
         </Row>
             
     </div>
