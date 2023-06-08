@@ -7,7 +7,7 @@ import InputConfig from './InputConfig';
 
 // Visual settings 
 const style: React.CSSProperties = {
-    color: '#1e1e1e'
+    color: '#8c8c82'
 }
 
 const style2: React.CSSProperties = {
@@ -54,7 +54,7 @@ const MainMenuPairsConfig: React.FC = () => {
                 <ConfigProvider
                     theme={{
                         token: {
-                            colorSplit: '#F5F5F5'
+                            colorSplit: '#8c8c82'
                         },
                     }}
                     >
@@ -127,7 +127,7 @@ const MainMenuPairsConfig: React.FC = () => {
                                 new WebSocket("wss://stream.binance.com:9443/ws")
                             );
                         }}
-                        inputPlaceholder={"BTCUSDT"}
+                        inputPlaceholder={"ETHUSDT"}
                     />
 
                     <InputConfig 
@@ -141,7 +141,7 @@ const MainMenuPairsConfig: React.FC = () => {
                                 new WebSocket("wss://stream.binance.com:9443/ws")
                             );
                         }}
-                        inputPlaceholder={"#F2A900"}
+                        inputPlaceholder={"#ecf0f1"}
                     />
 
                     <InputConfig 
