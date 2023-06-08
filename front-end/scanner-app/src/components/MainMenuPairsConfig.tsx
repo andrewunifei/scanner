@@ -44,123 +44,114 @@ const MainMenuPairsConfig: React.FC = () => {
 
     const pairsPackage = useOutletContext<configurationTools>();
 
-    const [leftTicker, setLeftTicker] = useState('')
-    const [rightTicker, setRightTicker] = useState('')
+    const [leftCustom, setLeftCustom] = useState('')
+    const [rightCustom, setRightCustom] = useState('')
 
     return (
     <div>
-        <Row>
-            <Col span={24} style={style2}>
-                <ConfigProvider
-                    theme={{
-                        token: {
-                            colorSplit: '#8c8c82'
-                        },
-                    }}
-                    >
-                    <Divider plain orientation='left'>
-                        <span style={style}>Set pairs</span>
-                    </Divider>
-                </ConfigProvider>
-            </Col>
-        </Row>
+        <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
+            <Row>
+                <Col span={24} style={style2}>
+                    <ConfigProvider
+                        theme={{
+                            token: {
+                                colorSplit: '#8c8c82'
+                            },
+                        }}
+                        >
+                        <Divider plain orientation='left'>
+                            <span style={style}>Set pairs</span>
+                        </Divider>
+                    </ConfigProvider>
+                </Col>
+            </Row>
 
-            {/* setRightPairColor: React.Dispatch<React.SetStateAction<string>>;
-            setRightBgColor: React.Dispatch<React.SetStateAction<string>>; */}
-        <Row justify="center">
-            <Col span={8} style={style2}>
+                {/* setRightPairColor: React.Dispatch<React.SetStateAction<string>>;
+                setRightBgColor: React.Dispatch<React.SetStateAction<string>>; */}
+            <Row justify="center">
+                <Col span={8} style={style2}>
+                    <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
+                        <InputConfig 
+                            title="Set left pair"
+                            setVariable={pairsPackage.left.setLeftPair}
+                            eventCallBack={() => {
+                                pairsPackage.left.setLeftConnectionState(false);
+                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+
+                                pairsPackage.left.setLeftWS(
+                                    new WebSocket("wss://stream.binance.com:9443/ws")
+                                );
+                            }}
+                            inputPlaceholder={"BTCUSDT"}
+                        />
+
+                        <InputConfig 
+                            title="Set left pair color"
+                            setVariable={setLeftCustom}
+                            eventCallBack={() => {
+                                pairsPackage.left.setLeftPairColor(leftCustom);
+                            }}
+                            inputPlaceholder={"#F2A900"}
+                        />
+
+                        <InputConfig 
+                            title="Set left background color"
+                            setVariable={setLeftCustom}
+                            eventCallBack={() => {
+                                pairsPackage.left.setLeftBgColor(leftCustom);
+                            }}
+                            inputPlaceholder={"#282C34"}
+                        />
+                    </Space>
+                </Col>
+
+                <Col span={8} style={style2}>
                 <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
-                    <InputConfig 
-                        title="Set left pair"
-                        setVariable={pairsPackage.left.setLeftPair}
-                        eventCallBack={() => {
-                            pairsPackage.left.setLeftConnectionState(false);
-                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                        <InputConfig 
+                            title="Set right pair"
+                            setVariable={pairsPackage.left.setLeftPair}
+                            eventCallBack={() => {
+                                pairsPackage.left.setLeftConnectionState(false);
+                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-                            pairsPackage.left.setLeftWS(
-                                new WebSocket("wss://stream.binance.com:9443/ws")
-                            );
-                        }}
-                        inputPlaceholder={"BTCUSDT"}
-                    />
+                                pairsPackage.left.setLeftWS(
+                                    new WebSocket("wss://stream.binance.com:9443/ws")
+                                );
+                            }}
+                            inputPlaceholder={"ETHUSDT"}
+                        />
 
-                    <InputConfig 
-                        title="Set left pair color"
-                        setVariable={pairsPackage.left.setLeftPair}
-                        eventCallBack={() => {
-                            pairsPackage.left.setLeftConnectionState(false);
-                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                        <InputConfig 
+                            title="Set right pair color"
+                            setVariable={pairsPackage.left.setLeftPair}
+                            eventCallBack={() => {
+                                pairsPackage.left.setLeftConnectionState(false);
+                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-                            pairsPackage.left.setLeftWS(
-                                new WebSocket("wss://stream.binance.com:9443/ws")
-                            );
-                        }}
-                        inputPlaceholder={"#F2A900"}
-                    />
+                                pairsPackage.left.setLeftWS(
+                                    new WebSocket("wss://stream.binance.com:9443/ws")
+                                );
+                            }}
+                            inputPlaceholder={"#ecf0f1"}
+                        />
 
-                    <InputConfig 
-                        title="Set left background color"
-                        setVariable={pairsPackage.left.setLeftPair}
-                        eventCallBack={() => {
-                            pairsPackage.left.setLeftConnectionState(false);
-                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
+                        <InputConfig 
+                            title="Set right background color"
+                            setVariable={pairsPackage.left.setLeftPair}
+                            eventCallBack={() => {
+                                pairsPackage.left.setLeftConnectionState(false);
+                                wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
 
-                            pairsPackage.left.setLeftWS(
-                                new WebSocket("wss://stream.binance.com:9443/ws")
-                            );
-                        }}
-                        inputPlaceholder={"#282C34"}
-                    />
-                </Space>
-            </Col>
-
-            <Col span={8} style={style2}>
-            <Space direction='vertical' size="middle" style={{ display: 'flex' }}>
-                    <InputConfig 
-                        title="Set right pair"
-                        setVariable={pairsPackage.left.setLeftPair}
-                        eventCallBack={() => {
-                            pairsPackage.left.setLeftConnectionState(false);
-                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
-
-                            pairsPackage.left.setLeftWS(
-                                new WebSocket("wss://stream.binance.com:9443/ws")
-                            );
-                        }}
-                        inputPlaceholder={"ETHUSDT"}
-                    />
-
-                    <InputConfig 
-                        title="Set right pair color"
-                        setVariable={pairsPackage.left.setLeftPair}
-                        eventCallBack={() => {
-                            pairsPackage.left.setLeftConnectionState(false);
-                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
-
-                            pairsPackage.left.setLeftWS(
-                                new WebSocket("wss://stream.binance.com:9443/ws")
-                            );
-                        }}
-                        inputPlaceholder={"#ecf0f1"}
-                    />
-
-                    <InputConfig 
-                        title="Set right background color"
-                        setVariable={pairsPackage.left.setLeftPair}
-                        eventCallBack={() => {
-                            pairsPackage.left.setLeftConnectionState(false);
-                            wsUnsubscribe(pairsPackage.left.leftPairWS, 1); 
-
-                            pairsPackage.left.setLeftWS(
-                                new WebSocket("wss://stream.binance.com:9443/ws")
-                            );
-                        }}
-                        inputPlaceholder={"#282C34"}
-                    />
-                </Space>
-            </Col>
-        </Row>
-            
+                                pairsPackage.left.setLeftWS(
+                                    new WebSocket("wss://stream.binance.com:9443/ws")
+                                );
+                            }}
+                            inputPlaceholder={"#282C34"}
+                        />
+                    </Space>
+                </Col>
+            </Row>
+        </Space> 
     </div>
     )
 }

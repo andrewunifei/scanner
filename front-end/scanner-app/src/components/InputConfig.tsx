@@ -3,6 +3,7 @@ import { Col, Row, Input, Button } from 'antd'
 import { ToolOutlined } from '@ant-design/icons';
 
 interface props {
+    // setVariable: React.Dispatch<React.SetStateAction<string>>;
     setVariable: React.Dispatch<React.SetStateAction<string>>;
     eventCallBack: Function;
     inputPlaceholder: string;

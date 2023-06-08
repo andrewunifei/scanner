@@ -31,13 +31,6 @@ const items: MenuProps['items'] = [
   },
 ];
 
-const flexContainer: React.CSSProperties = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  background: appColors.dark
-}
-
 interface pairStreamInterface {
   leftPairWS: WebSocket;
   leftPair: string;
@@ -95,6 +88,13 @@ const Layout: React.FC = () => {
     setCurrent(e.key);
   };
 
+  const pairContainer: React.CSSProperties = {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    background: appColors.dark
+  }
+
   // Display configuration
   return (
     <div>
@@ -102,7 +102,7 @@ const Layout: React.FC = () => {
         <Col span={18}>
           <Menu onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
         </Col>
-        <Col span={3} style={flexContainer}>
+        <Col span={3} style={pairContainer}>
           <PairStream 
             pair={pairStreamHoldings.leftPair} 
             id={1} ws={pairStreamHoldings.leftPairWS} 
@@ -111,7 +111,7 @@ const Layout: React.FC = () => {
             setConnectionState={setLeftConnectionState} 
           />
         </Col>
-        <Col span={3} style={flexContainer}>
+        <Col span={3} style={pairContainer}>
           <PairStream 
             pair={pairStreamHoldings.rightPair} 
             id={2} ws={pairStreamHoldings.rightPairWS} 
