@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react'
-import { Col, Row, Input, Space, Button, Divider, ConfigProvider } from 'antd'
-import { ToolOutlined } from '@ant-design/icons';
+import React, { useState } from 'react'
+import { Col, Row, Space, Divider, ConfigProvider } from 'antd'
 import { useOutletContext } from 'react-router-dom';
-import { wsConnectionMechanics, wsUnsubscribe } from '../functions/wsFunctions';
+import { wsUnsubscribe } from '../functions/wsFunctions';
 import InputConfig from './InputConfig';
 
 // Visual settings 

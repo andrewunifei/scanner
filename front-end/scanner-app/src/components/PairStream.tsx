@@ -82,6 +82,7 @@ const PairStream: React.FC<menuPairStreamPropsInterface> = (
         </div>
       }
     </div>
+    
   )
 };
 

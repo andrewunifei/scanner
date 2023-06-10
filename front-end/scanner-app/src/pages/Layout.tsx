@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { PieChartTwoTone, SettingTwoTone } from '@ant-design/icons';
+import React, { useState } from 'react';
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { appColors } from '../colors';
