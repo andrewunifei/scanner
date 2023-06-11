@@ -28,7 +28,7 @@ const style: React.CSSProperties = {
 }
 
 
-const App: React.FC = () => {
+const Configuration: React.FC = () => {
   const [current, setCurrent]= useState<string>('mainMenuPair');
 
   const onClick: MenuProps['onClick'] = (e) => {
@@ -83,4 +83,4 @@ const App: React.FC = () => {
   );
 };
 
-export default App
+export default Configuration

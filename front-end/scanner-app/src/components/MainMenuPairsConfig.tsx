@@ -6,7 +6,7 @@ import InputConfig from './InputConfig';
 
 // Visual settings 
 const style: React.CSSProperties = {
-    color: '#8c8c82'
+    color: '#000'
 }
 
 const style2: React.CSSProperties = {
@@ -54,7 +54,7 @@ const MainMenuPairsConfig: React.FC = () => {
                     <ConfigProvider
                         theme={{
                             token: {
-                                colorSplit: '#8c8c82'
+                                colorSplit: '#000'
                             },
                         }}
                         >
