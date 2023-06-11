@@ -17,7 +17,6 @@ const Dashboard: React.FC = () => {
         height: '95vh', 
         border: '1px solid black',
       }}>
-        <Content>
           <Row 
 
           gutter={16}
@@ -53,7 +52,6 @@ const Dashboard: React.FC = () => {
             }}>
             </Col>
           </Row> */}
-        </Content>
         <Footer style={{ textAlign: 'center' }}>
           <Divider plain>Fractal Hub • 2023</ Divider>
         </Footer>
